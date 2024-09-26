@@ -83,8 +83,7 @@ const firebaseConfig = {
 
 2. Ensure your Firestore database has the following structure:
    ```
-
-users[
+	users[
 	user1[
 		currentMonth[
 			servoControl[servoState:1],
@@ -117,12 +116,12 @@ users[
 		],
 
 	],
-]
-
-admin[
-	limit[max:200,penalty:150, regular:100],
-	price[penaltyPrice:2, regularPrice:.4]
-]
+	]
+	
+	admin[
+		limit[max:200,penalty:150, regular:100],
+		price[penaltyPrice:2, regularPrice:.4]
+	]
 
 ---
 
