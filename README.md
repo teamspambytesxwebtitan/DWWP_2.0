@@ -120,7 +120,8 @@ const firebaseConfig = {
 	
 	admin[
 		limit[max:200,penalty:150, regular:100],
-		price[penaltyPrice:2, regularPrice:.4]
+		price[penaltyPrice:2, regularPrice:.4],
+		01ListOfAdmin[admins:["admin@gmail.com", "admin2@gmail.com"]]
 	]
 
 ---
