@@ -1,0 +1,52 @@
+/* src/users/Userlayout.css */
+
+.user-layout {
+    display: flex;
+    position: relative;
+  }
+  .profile-container {
+    height: auto; /* Adjusted to fit content */
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent background for black backdrop */
+    padding: 15px; /* Increased padding for better spacing */
+    border-radius: 8px; /* Slightly increased border-radius for smooth edges */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow for stronger effect */
+    z-index: 10;
+    backdrop-filter: blur(5px); /* Adds a subtle blur effect */
+    color: #fff; /* Text color white for dark background */
+    font-family: Arial, sans-serif;
+}
+
+.profile-info {
+    text-align: right;
+}
+
+.profile-name {
+    font-weight: bold;
+    display: block;
+    font-size: 1.5rem; /* Larger font for readability */
+    color: #fff; /* White text for name */
+}
+
+.profile-email {
+    color: #ccc; /* Light gray for email */
+    font-size: 1.1rem;
+}
+
+.signout-button {
+  display: none;
+  background-color: #ff4b4b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 1rem auto;
+  border-radius: 5px;
+}
+
+/* Show the sign-out button when hovering over the profile-info */
+.profile-info:hover .signout-button {
+  display: block;
+}
