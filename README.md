@@ -1,6 +1,6 @@
-# WaterFlow Management System
+# Domestic Water Wastage Prevention System
 
-This project is a **WaterFlow Management System** that interfaces with Firebase Firestore to fetch and update water flow data and control servo gates using a React frontend. The project includes two primary functionalities:
+This project is a ** Domestic Water Wastage Prevention System** that interfaces with Firebase Firestore to fetch and update water flow data and control servo gates using a React frontend. The project includes two primary functionalities:
 - **Servo Control**: For opening and closing the servo-controlled gate.
 - **WaterFlow Data**: For displaying real-time water usage and flow rate.
 
