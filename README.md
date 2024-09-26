@@ -175,7 +175,7 @@ This project is open-source and available under the [MIT License](LICENSE).
 ## Contributors
 
 - Akash Bera- [Developer](https://www.linkedin.com/in/akash-bera-5a3009250/)
-- Subhayan Kapas- [Developer](https://linkedin.com/in/yourprofile)
+- Subhayan Kapas- [Developer](https://www.linkedin.com/in/subhayan-kapas-003009250?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
 
 
 #
