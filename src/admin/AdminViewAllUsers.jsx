@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';  // Adjust the path as necessary
+import { db } from '../firebaseConfig'; // Adjust the path as necessary
 import '../allCss/adminViewAllUser.css'; 
 
 const AdminDashboard = () => {
   const [allUsersData, setAllUsersData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search
 
   // Fetch all users
   const fetchAllUsers = async () => {
@@ -81,7 +83,20 @@ const AdminDashboard = () => {
     fetchAllUsersData();
   }, []);
 
-  if (loading) return <p className='load'>Loading...</p>;
+  // Handler for viewing user details
+  const handleViewDetails = (user) => {
+    setSelectedUser(user);
+  };
+
+  // Handler to close the modal
+  const handleCloseModal = () => {
+    setSelectedUser(null);
+  };
+
+  // Filter users based on search query
+  const filteredUsers = allUsersData.filter(user =>
+    user.userId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="admin-dashboard-container">
@@ -90,19 +105,34 @@ const AdminDashboard = () => {
       </header>
       
       <main className="admin-dashboard-main">
+      {loading ? (
+        <div className="loading-container">
+          <p className="load">Loading...</p>
+        </div>
+      ) : (
+      <>
+        <div className="search-bar-User">
+          <input 
+            type="text" 
+            placeholder='Search by ID'
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
         <table className="admin-dashboard-table">
           <thead>
             <tr>
-              <th>User ID</th>
-              <th>Current Month Usage (liters)</th>
-              <th>January 2024 Usage (liters)</th>
-              <th>February 2024 Usage (liters)</th>
+              <th>User ID</th>  
+              <th>Current Month Usage</th>
+              <th>January 2024 Usage</th>
+              <th>February 2024 Usage</th>
               <th>Current Servo State</th>
               <th>Due Bill</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>
-            {allUsersData.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.userId}>
                 <td>{user.userId}</td>
                 <td>{user.currentMonth.totalUsage}</td>
@@ -110,15 +140,46 @@ const AdminDashboard = () => {
                 <td>{user.feb24.totalUsage}</td>
                 <td>{user.currentMonth.servoState === true ? 'On' : 'Off'}</td>
                 <td>{user.currentMonth.totalUsage }</td>
+                <td>
+                  <button 
+                    className='userViewDetails' 
+                    onClick={() => handleViewDetails(user)}
+                  >
+                    View Details
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+        </>
+      )}
       </main>
-      
-      <footer className="admin-dashboard-footer">
-        <p>&copy; {new Date().getFullYear()} WaterFlow Dashboard. All rights reserved.</p>
-      </footer>
+
+      {/* Modal for User Details */}
+      {selectedUser && (
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>User Details</h2>
+            <button className="close-button" onClick={handleCloseModal}>X</button>
+            <div className="user-details">
+              <p><strong>User ID:</strong> {selectedUser.userId}</p>
+              
+              <h3>Current Month</h3>
+              <p><strong>Total Usage:</strong> {selectedUser.currentMonth.totalUsage}</p>
+              <p><strong>Servo State:</strong> {selectedUser.currentMonth.servoState === true ? 'On' : 'Off'}</p>
+
+              <h3>January 2024</h3>
+              <p><strong>Total Usage:</strong> {selectedUser.jan24.totalUsage}</p>
+              <p><strong>Servo State:</strong> {selectedUser.jan24.servoState === true ? 'On' : 'Off'}</p>
+
+              <h3>February 2024</h3>
+              <p><strong>Total Usage:</strong> {selectedUser.feb24.totalUsage}</p>
+              <p><strong>Servo State:</strong> {selectedUser.feb24.servoState === true ? 'On' : 'Off'}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -75,12 +75,20 @@ const ListOfAdmin = () => {
   };
 
   if (loading) {
-    return <p  className='load' style={{  color: '#f5f5f5' }}>Loading ...</p>;
+    // return <p  className='load' style={{  color: '#f5f5f5' }}>Loading ...</p>;
   }
 
   return (
     <div className="admin-list-container">
-      <h1>Admin List</h1>
+      <header className="list-of-admin-header">
+        <h1>Admin List</h1>
+      </header>
+      {loading ? (
+        <div className="loading-container">
+          <p className="load">Loading...</p>
+        </div>
+      ) : (
+      <div className="admin-list-main">
       {error && <p className="error-message">{error}</p>}
       <ul>
         {admins.map((admin, index) => (
@@ -94,7 +102,7 @@ const ListOfAdmin = () => {
                   placeholder="New Admin Email"
                 />
                 <button onClick={() => handleSaveClick(index)}>Save</button>
-                <button onClick={handleCancelClick}>Cancel</button>
+                <button className='cancel-click' onClick={handleCancelClick}>Cancel</button>
               </div>
             ) : (
               <div className="admin-info">
@@ -105,7 +113,10 @@ const ListOfAdmin = () => {
           </li>
         ))}
       </ul>
+      </div> 
+    )}
     </div>
+     
   );
 };
 

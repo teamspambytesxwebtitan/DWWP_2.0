@@ -49,14 +49,18 @@ const SetLimit = () => {
     }
   };
 
-  if (loading) return <p className='load'>Loading...</p>;
+  // if (loading) return <p className='load'>Loading...</p>;
 
   return (
     <div className="setlimit-container">
       <header className="setlimit-header">
         <h1>Set Limits</h1>
       </header>
-      
+      {loading ? (
+        <div className="loading-container">
+          <p className="load">Loading...</p>
+        </div>
+      ) : (
       <main className="setlimit-main">
         <form onSubmit={handleSubmit} className="setlimit-form">
           <label>
@@ -95,10 +99,8 @@ const SetLimit = () => {
           <button type="submit">Update Limits</button>
         </form>
       </main>
-      
-      <footer className="setlimit-footer">
-        <p>&copy; {new Date().getFullYear()} WaterFlow Dashboard. All rights reserved.</p>
-      </footer>
+      )}
+    
     </div>
   );
 };

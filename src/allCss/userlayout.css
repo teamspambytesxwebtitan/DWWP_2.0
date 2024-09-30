@@ -4,19 +4,20 @@
     display: flex;
     position: relative;
   }
-  .profile-container {
-    height: auto; /* Adjusted to fit content */
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background-color: rgba(255, 255, 255, 0.1); /* Transparent background for black backdrop */
-    padding: 15px; /* Increased padding for better spacing */
-    border-radius: 8px; /* Slightly increased border-radius for smooth edges */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow for stronger effect */
-    z-index: 10;
-    backdrop-filter: blur(5px); /* Adds a subtle blur effect */
-    color: #fff; /* Text color white for dark background */
-    font-family: Arial, sans-serif;
+.profile-container {
+  height: auto; /* Adjusted to fit content */
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.1); /* Transparent background for black backdrop */
+  background-color: #333;
+  padding: 15px; /* Increased padding for better spacing */
+  border-radius: 8px; /* Slightly increased border-radius for smooth edges */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow for stronger effect */
+  z-index: 10;
+  backdrop-filter: blur(5px); /* Adds a subtle blur effect */
+  color: #fff; /* Text color white for dark background */
+  font-family: Arial, sans-serif;
 }
 
 .profile-info {
@@ -37,13 +38,16 @@
 
 .signout-button {
   display: none;
-  background-color: #ff4b4b;
-  color: white;
-  border: none;
+  border: 2px solid #ff4b4b;
+  background-color: transparent;
+  color: #ff4b4b;
   padding: 5px 10px;
   cursor: pointer;
   margin: 1rem auto;
-  border-radius: 5px;
+  font-weight: 700;
+  &:hover{
+    background-color:  #1a1a1a;
+  }
 }
 
 /* Show the sign-out button when hovering over the profile-info */

@@ -1,88 +1,92 @@
-import React from 'react'
-import {Link, NavLink} from 'react-router-dom'
-import { useState } from 'react';
-import '../allCss/sidebar.css'
-
-
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import '../allCss/sidebar.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { auth } from '../firebaseConfig'; // Import Firebase auth
+import { width } from '@fortawesome/free-solid-svg-icons/fa0';
 
 function UserSidebar() {
-  const [openIndex, setOpenIndex] = useState(null); // State to keep track of the currently open accordion index
-  // const [bgcolouradd, setBgcolouradd] = useState(false);
-  
-  const toggleAccordion = (index) => {
-    setOpenIndex(openIndex === index ? null : index); // If the same accordion is clicked, close it; otherwise, 
-  };
-  const[subOpenIndex, setSubOpenIndex] = useState(null)
-  const setItColour=(sub_index)=>{  
-      setSubOpenIndex(sub_index)
-    }
+  const user = auth.currentUser; // Get the logged-in user
 
-
-  return (<>
-    
-    <div class="sidenav">
-
-    <div>
-      <div>
-        <div onClick={() => toggleAccordion(0)} class="accordion" style={{backgroundColor: openIndex===0?'rgb(45, 30, 56)':''}}>
-         
-        <label class="label">
-          <svg width="25" height="25" version="1.1" viewBox="144 144 512 512" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#ffffff" style={{ marginRight: "10px" }}>
-
-            <g id="SVGRepo_bgCarrier" stroke-width="0"/>
-
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-
-            <g id="SVGRepo_iconCarrier"> <defs> <clipPath id="a"> <path d="m148.09 393h503.81v240h-503.81z"/> </clipPath> </defs> <path d="m438.48 419.17c21.828 0 42.758-8.668 58.191-24.102 15.434-15.434 24.105-36.367 24.105-58.191 0-39.996-64.355-142.1-82.297-169.69-17.887 27.434-82.297 129.7-82.297 169.69h0.003906c0 21.824 8.668 42.758 24.102 58.191 15.434 15.434 36.367 24.102 58.191 24.102z"/> <g clip-path="url(#a)"> <path d="m610.59 413.52-83.391 96.559v2.6328c-0.015625 9.7891-3.9102 19.172-10.832 26.094-6.9219 6.9219-16.305 10.816-26.09 10.828h-122.73c-0.27344 0-20.902 0-32.918 8.1758-2.4805 1.5391-5.7305 0.86719-7.3984-1.5312-1.6641-2.3945-1.1641-5.6758 1.1445-7.4648 14.867-10.258 38.406-10.148 39.172-10.148l122.79-0.003907c6.8516 0 13.43-2.7109 18.289-7.5391 4.8633-4.832 7.6172-11.391 7.6602-18.246 0.054688-0.73047 0.054688-1.4648 0-2.1953-0.39062-0.85938-0.59375-1.7969-0.60156-2.7422-1.125-5.9453-4.2891-11.316-8.9453-15.18-4.6562-3.8672-10.516-5.9883-16.566-5.9961h-65.836c-24.613-0.050781-48.934-5.3633-71.324-15.582l-52.012-23.867c-84.98-44.164-143.96 17.777-152.9 27.98v80.266c55.465 0.66016 110.22 23.867 112.58 24.852l101.71 45.426 0.003906 0.003906c18.461 8.2383 39.387 9.043 58.43 2.25l121.58-42.629h-0.003907c21.027-7.4219 37.953-23.355 46.637-43.891l62.871-148.13c-15.945 0.73047-30.887 7.9922-41.312 20.082z"/> </g> </g>
-
+  return (
+    <>
+      <div className="sidenav">
+        <br></br>
+        <img src="https://cdn-icons-png.flaticon.com/512/9385/9385289.png" height={"150rem"}/>
+        <br></br>
+        <h1>User</h1>
+        <br></br>
+        {/* <br></br> */}
+        
+        
+        <div className="nav-item">
+          <NavLink to="/user/waterflow" className="nav-link">
+            <div className="userIinnerNavbar">
+              <svg 
+                style={{width:'1.4rem'}}
+                version="1.1" 
+                id="Layer_1" 
+                xmlns="http://www.w3.org/2000/svg" 
+                xmlnsXlink="http://www.w3.org/1999/xlink" 
+                // x="0px" 
+                // y="0px" 
+                viewBox="0 0 122.88 122.566" 
+                enableBackground="new 0 0 122.88 122.566" 
+                xmlSpace="preserve"
+                >
+                <g>
+                    <path 
+                        fillRule="evenodd" 
+                        clipRule="evenodd" 
+                        fill="#ffff" 
+                        d="M3.78,66.082h47.875c2.045,0,3.717,1.988,3.717,4.414v46.479c0,2.43-1.671,4.416-3.717,4.416H3.78 c-2.043,0-3.717-1.986-3.717-4.416V70.496C0.063,68.07,1.737,66.082,3.78,66.082L3.78,66.082z M71.224,0H119.1 c2.046,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H71.224c-2.045,0-3.714-1.984-3.714-4.413V4.415 C67.51,1.986,69.179,0,71.224,0L71.224,0z M3.714,0h47.878c2.045,0,3.717,1.986,3.717,4.415v46.479c0,2.429-1.671,4.413-3.717,4.413H3.714 C1.671,55.307,0,53.323,0,50.894V4.415C0,1.986,1.671,0,3.714,0L3.714,0z M71.287,67.26h47.876c2.043,0,3.717,1.986,3.717,4.416v46.479 c0,2.426-1.674,4.412-3.717,4.412H71.287c-2.045,0-3.717-1.986-3.717-4.412V71.676C67.57,69.246,69.242,67.26,71.287,67.26L71.287,67.26z"
+                    />
+                </g>
             </svg>
-         Dashboard
-        </label>
-        </div>
-        {openIndex === 0 && (
-          <div class="panel">
-            <p> 
-              <NavLink to="/user/waterflow">
-              <p class="side-nav-sub-list" onClick={()=>setItColour(0)} style={{backgroundColor:subOpenIndex ===0 ?"rgb(45, 30, 56)": ""}}>Total Usages</p>
-              </NavLink>
-            </p>
-            <p><NavLink to="/user/servoControl"><p class="side-nav-sub-list" onClick={()=>setItColour(1)} style={{backgroundColor:subOpenIndex ===1 ?"rgb(45, 30, 56)": ""}}>Gate Control </p></NavLink></p>
-           
+            Dashboard
           </div>
-        )}
-      </div>
-
-      <div>
-        <div onClick={() => toggleAccordion(1)} class="accordion"  style={{backgroundColor: openIndex===1?'rgb(45, 30, 56)':''}}>
-        <label class="label">
-        <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="White"
-                width="25"
-                height="25"
-                style={{ marginRight: "10px" }}
+          </NavLink>
+        </div>
+        <div className="nav-item">
+          <NavLink to="/user/servocontrol" className="nav-link">
+          <div className="userIinnerNavbar">
+                <svg 
+                  version="1.1" 
+                  id="Layer_1" 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  xmlnsXlink="http://www.w3.org/1999/xlink" 
+                  viewBox="0 0 122.23 122.88" 
+                  style={{ enableBackground: 'new 0 0 122.23 122.88' ,width:'1.4rem'}} 
+                  xmlSpace="preserve"
+                 // Maintain aspect ratio
               >
-                <path d="M2 22C2 17.5817 5.58172 14 10 14C14.4183 14 18 17.5817 18 22H2ZM10 13C6.685 13 4 10.315 4 7C4 3.685 6.685 1 10 1C13.315 1 16 3.685 16 7C16 10.315 13.315 13 10 13ZM17.3628 15.2332C20.4482 16.0217 22.7679 18.7235 22.9836 22H20C20 19.3902 19.0002 17.0139 17.3628 15.2332ZM15.3401 12.9569C16.9728 11.4922 18 9.36607 18 7C18 5.58266 17.6314 4.25141 16.9849 3.09687C19.2753 3.55397 21 5.57465 21 8C21 10.7625 18.7625 13 16 13C15.7763 13 15.556 12.9853 15.3401 12.9569Z"></path>
+                  <style type="text/css">{`.st0{fill-rule:evenodd;clip-rule:evenodd;}`}</style>
+                  <g>
+                      <path fill="#ffff" 
+                          className="st0" 
+                          d="M122.23,12.35v10.54c0,1.29-1.21,2.35-2.69,2.35H77.85c-2.84,5.92-8.89,10.01-15.9,10.01c-7,0-13.05-4.09-15.89-10.01H2.69C1.22,25.24,0,24.18,0,22.89V12.35C0,11.06,1.21,10,2.69,10h43.37c2.84-5.92,8.89-10,15.89-10c7,0,13.05,4.09,15.89,10h41.69C121.02,10,122.23,11.06,122.23,12.35L122.23,12.35L122.23,12.35z M49.57,112.88c-2.84,5.92-8.89,10-15.9,10c-7,0-13.05-4.08-15.89-10l-15.09,0c-1.48,0-2.69-1.06-2.69-2.35V99.99c0-1.29,1.21-2.35,2.69-2.35l15.09,0c2.84-5.92,8.89-10.01,15.89-10.01c7,0,13.05,4.09,15.89,10.01h69.97c1.48,0,2.69,1.06,2.69,2.35v10.54c0,1.29-1.22,2.35-2.69,2.35L49.57,112.88L49.57,112.88z M104.12,69.73c-2.84,5.92-8.89,10.01-15.89,10.01c-7,0-13.05-4.09-15.9-10.01H2.69C1.22,69.73,0,68.67,0,67.38V56.85c0-1.29,1.21-2.35,2.69-2.35h69.64c2.84-5.92,8.89-10,15.89-10c7,0,13.05,4.09,15.89,10h15.42c1.48,0,2.69,1.06,2.69,2.35v10.53c0,1.29-1.21,2.35-2.69,2.35H104.12L104.12,69.73z"
+                      />
+                  </g>
               </svg>
-          View Analytics
-          </label>
-        </div>
-        {openIndex === 1 && (
-          <div class="panel">
-           <p> <NavLink to="/user/viewanalytics"  ><p class="side-nav-sub-list">Goto Analytics</p></NavLink></p>
+            Gate Control
           </div>
-        )}
+          </NavLink>
+        </div>
+        <div className="nav-item">
+          <NavLink to="/user/viewanalytics" className="nav-link">
+           <div className="userIinnerNavbar" style={{width: "90%"}}>
+            <svg  style={{width:'1.4rem'}} id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 135.42 122.88">
+            <title>bar-chart</title>
+            <path fill="#ffff"  d="M65.62,14.08H85.85a2,2,0,0,1,2,2V95.56a2,2,0,0,1-2,2H65.62a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2Zm69.8,108.8H9.93v0A9.89,9.89,0,0,1,0,113H0V0H12.69V110.19H135.42v12.69ZM103.05,53.8h20.23a2,2,0,0,1,2,2V95.56a2,2,0,0,1-2,2H103.05a2,2,0,0,1-2-2V55.75a2,2,0,0,1,2-2ZM28.19,29.44H48.42a2,2,0,0,1,1.95,1.95V95.56a2,2,0,0,1-1.95,2H28.19a2,2,0,0,1-2-2V31.39a2,2,0,0,1,2-1.95Z"/>
+           </svg>
+            Monthly Analytics
+            </div>
+          </NavLink>
+        </div>
       </div>
-
-
-    </div>
-
-     
-    </div>
-</>
-  )
+    </>
+  );
 }
 
-
-export default UserSidebar
+export default UserSidebar;

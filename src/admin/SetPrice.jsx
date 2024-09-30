@@ -46,14 +46,18 @@ const SetPrice = () => {
     }
   };
 
-  if (loading) return <p className='load'>Loading...</p>;
+  // if (loading) return <p className='load'>Loading...</p>;
 
   return (
     <div className="setprice-container">
       <header className="setprice-header">
         <h1>Set Pricing</h1>
       </header>
-      
+      {loading ? (
+        <div className="loading-container">
+          <p className="load">Loading...</p>
+        </div>
+      ) : (
       <main className="setprice-main">
         <form onSubmit={handleSubmit} className="setprice-form">
           <label>
@@ -81,10 +85,8 @@ const SetPrice = () => {
           <button type="submit">Update Prices</button>
         </form>
       </main>
-      
-      <footer className="setprice-footer">
-        <p>&copy; {new Date().getFullYear()} WaterFlow Dashboard. All rights reserved.</p>
-      </footer>
+      )}
+     
     </div>
   );
 };

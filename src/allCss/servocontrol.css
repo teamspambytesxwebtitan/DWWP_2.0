@@ -1,129 +1,159 @@
-/* General styling for the ServoControl component */
+/* servoControl.css */
+
 .servo-control-container {
     width: 50%;
-    /* height: 50%; */
-    margin: 10vh 30%;
-    border-radius: 1rem;
-    background-color:  #1e1e1e; 
-    /* background-color: #000000; Black background */
-    color: #fff; /* White text */
-    min-height: 50vh;
     min-width: 50%;
+    background-color: #000000; /* Black background */
+    color: #f5f5f5; /* Light text color */
+    padding: 20px;
+    border-radius: 1rem;
+    margin: 10vh 30%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 20px;
-  }
-  
-  /* Header styling */
-  .servo-control-header {
-    margin-bottom: 30px;
-    text-align: center;
-  }
-  
-  .servo-control-header h1 {
-    font-size: 2.5rem;
-    color: #ff9900; /* Bright orange for the title */
-    color: rgb(8, 229, 8);
-    text-shadow: 2px 2px 5px #333;
-  }
-  
-  /* Main content styling */
-  .servo-control-main {
-    background-color: #393939; /* Dark background for the main section */
-    padding: 20px;
-    border-radius: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-  }
-  
-  .servo-control-main p {
-    font-size: 1.2rem;
-    color: #00ccff; /* Light blue for the text */
-    margin: 10px 0;
-  }
-  
-  /* Footer styling */
-  .servo-control-footer {
-    margin-top: 30px;
-    text-align: center;
-  }
-  
-  .servo-control-footer p {
-    font-size: 0.9rem;
-    color: #888; /* Light gray for footer text */
-  }
-  /* Slider toggle switch styling */
+}
+
+.servo-control-header {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.servo-control-header h1 {
+  font-size: 2.5rem;
+  color: #00bcd4;
+}
+
+.servo-control-main {
+  width: 100%;
+  max-width: 650px;
+  background-color: #1a1a1a; /* Dark background for the form */
+  padding: 20px;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.toggle-and-bar{
+  width: 80%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  background-color: #2a2a2a;
+  box-shadow: 0px 0px 25px black;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
 .servo-control-toggle {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
+  margin: 1em 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 34px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px; width: 26px;
+  left: 4px; bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #1de9b6;
+}
+
+input:checked + .slider:before {
+  transform: translateX(46px);
+}
+
+.usage-bar {
+  width: 70%;
+  height: 30px;
+  border-radius: 15px;
+  margin: 1em 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  text-shadow: 0px 0px 8px black;
+}
+.filled-bar {
+  height: 100%;
+  border-radius: 15px 0 0 15px;
+  transition: width 0.5s ease, background-color 0.5s ease;
+}
+.usage-buttons {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.usage-buttons button {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 4px;
+  background-color: #00bcd4;
+  color: #fff;
+  text-shadow: 0px 10px 5px black;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.usage-buttons button:hover {
+  background-color: #1de9b6;
+}
+
+.usages-message {
+  text-align: center;
+  max-width: 80%;
+  margin-top: 1em;
+  font-size: 1.2em;
+}
+
+.blink {
+  animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+  
+  to {
+    visibility: hidden;
   }
   
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
-  
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    border-radius: 50%;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #4CAF50; /* Green when checked */
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #4CAF50;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(26px);
-  }
-  
-  .load{
-    font-size: large;
-    margin: 0 auto;
-    margin-left: 50%;
-    margin-top: 50vh;
-  }
-  .usage-bar{
-    border-radius: .5rem;
-    padding: 1rem;
-    font-weight: 700;
-    width: 50%  ;
-    margin: 0 auto;
-    color: black;
-    font-size: 1.2rem;
-  }
+}
+
+.load {
+  text-align: center;
+  font-size: 1.5em;
+  color: #fff;
+  position: fixed;
+  top: 0vh;
+  left: 5%;
+}

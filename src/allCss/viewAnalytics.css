@@ -1,87 +1,124 @@
-/* src/allCss/viewAnalytics.css */
-
 .view-analytics-container {
-    background-color: #000; /* Dark background color */
-    color: #fff; /* Light text color for contrast */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .view-analytics-header h1 {
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
+  width: 50%;
+  min-width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10vh 30%;
+  background-color: #000; /* Dark background color */
+  color: #fff; /* Light text color for contrast */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.view-analytics-header {
+  text-align: center;
+}
+
+.view-analytics-header h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  color: #00bcd4;
+}
+
+.view-analytics-main {
+  max-width: 950px;
+  width: 80vw;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.chart-container {
+  min-width: 50%;
+  flex: 2;
+  padding: 20px;
+  background-color: #333; /* Slightly lighter background for the chart area */
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.data-list {
+  overflow: scroll;
+  max-height: 400px;
+  min-width: 200px;
+  flex: 1;
+  padding: 20px;
+  background-color: #444; /* Darker background for the data list */
+  border-radius: 8px;
+  margin-left: 20px;
+  display: flex;
+  flex-wrap: wrap; /* Wrap into multiple rows */
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.data-list ul {
+  max-width: 80%; /* Limit width to ensure two columns */
+  list-style-type: none;
+  padding: 0;
+  flex: 1 1 45%; /* Allow items to grow and shrink, keeping two per row */
+  min-width: 10rem; /* Ensure a minimum width */
+}
+
+.data-list li {
+  background-color: #242424;
+  min-height: 3rem;
+  min-width: 80%;
+  border-radius: 0.5rem;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.data-list ul:nth-child(2) {
+  height: 5rem;
+  border-radius: 0.5rem;
+  background-color: #3e7b4087;
+  border: 2px solid rgb(21, 251, 29);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.data-list strong {
+  color: rgb(47, 174, 237); /* Light blue color for strong text */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
   .view-analytics-main {
-    width: 80vw;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    width: 60vw;
+    margin-left: 10px;
+    flex-direction: column;
   }
-  
-  .chart-container {
-    margin-left: 30vw;
-    width: 40%;
-    flex: 2;
-    padding: 20px;
-    background-color: #333; /* Slightly lighter background for the chart area */
-    border-radius: 8px;
-    /* background-color: red; */
-  }
-  
+
   .data-list {
-    flex: 1;
-    padding: 20px;
-    background-color: #444; /* Darker background for the data list */
-    border-radius: 8px;
-    margin-left: 20px;
-  }
-  
-  .data-list ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .data-list li {
-    margin-bottom: 10px;
-  }
-  
-  .data-list strong {
-    color: #4CAF50; /* Green color for strong text */
-    color:  rgb(47,174,237);
-    /* color: rgb(81, 12, 229) ; */
-  }
-  
-  .view-analytics-footer {
-    text-align: center;
+    margin-left: 0;
     margin-top: 20px;
-    color:  rgb(47,174,237); /* Light gray text for footer */
   }
-  
-  @media (max-width: 600px) {
-    .view-analytics-main {
-      flex-direction: column;
-    }
-  
-    .data-list {
-      margin-left: 0;
-      margin-top: 20px;
-    }
-  
-    .view-analytics-header h1 {
-      font-size: 18px;
-    }
-  
-    .chart-container, .data-list {
-      width: 100%;
-    }
+
+  .view-analytics-header h1 {
+    font-size: 18px;
   }
-  
-  .load{
-    font-size: large;
-    margin: 0 auto;
-    margin-left: 50%;
-    margin-top: 50vh;
+
+  .chart-container,
+  .data-list {
+    width: 100%;
   }
+
+  .data-list ul {
+    min-width: 100%; /* Make list items full-width on small screens */
+  }
+}
+
+
