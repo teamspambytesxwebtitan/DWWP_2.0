@@ -1,21 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../allCss/sidebar.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { auth } from '../firebaseConfig'; // Import Firebase auth
-import { width } from '@fortawesome/free-solid-svg-icons/fa0';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebaseConfig'; // Ensure you import Firestore database
 
 function UserSidebar() {
+  const [username, setUsername] = useState(""); // State to hold username
+  const[isExpanded, setIsExpanded] = useState(true)
+
+   function HandleExpansion(){
+    const newvar = !isExpanded
+    setIsExpanded(!isExpanded)
+  }
   const user = auth.currentUser; // Get the logged-in user
 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      if (user) {
+        const userDocRef = doc(db, 'users', user.email); // Reference to the user's document
+        const userDoc = await getDoc(userDocRef); // Get the document
+        
+        if (userDoc.exists()) {
+          const userDetails = userDoc.data().userDetails; // Access userDetails array
+          setUsername(userDetails[0]); // Set the username from the 0th index
+        } else {
+          console.log("No such document!");
+        }
+      }
+    };
+
+    fetchUserDetails();
+  }, [user]);
   return (
     <>
-      <div className="sidenav">
+      <div style={{width:isExpanded ? '80%':'5rem'}} className="sidenav">
         <br></br>
-        <img src="https://cdn-icons-png.flaticon.com/512/9385/9385289.png" height={"150rem"}/>
+        {isExpanded? (
+         <img src="https://cdn-icons-png.flaticon.com/512/9385/9385289.png" height={"150rem"}/>
+        ):( <div className="sidenavimg"></div> )}
         <br></br>
-        <h1>User</h1>
+        {isExpanded?(
+          <h1>{username}</h1>
+        ):( <div className="space-for-sidenav-h1">{username}</div>)}
         <br></br>
         {/* <br></br> */}
         
@@ -44,7 +72,7 @@ function UserSidebar() {
                     />
                 </g>
             </svg>
-            Dashboard
+            {isExpanded?('Dashboard '):('')}
           </div>
           </NavLink>
         </div>
@@ -69,7 +97,7 @@ function UserSidebar() {
                       />
                   </g>
               </svg>
-            Gate Control
+             {isExpanded?('Gate Control'):('')}
           </div>
           </NavLink>
         </div>
@@ -80,10 +108,11 @@ function UserSidebar() {
             <title>bar-chart</title>
             <path fill="#ffff"  d="M65.62,14.08H85.85a2,2,0,0,1,2,2V95.56a2,2,0,0,1-2,2H65.62a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2Zm69.8,108.8H9.93v0A9.89,9.89,0,0,1,0,113H0V0H12.69V110.19H135.42v12.69ZM103.05,53.8h20.23a2,2,0,0,1,2,2V95.56a2,2,0,0,1-2,2H103.05a2,2,0,0,1-2-2V55.75a2,2,0,0,1,2-2ZM28.19,29.44H48.42a2,2,0,0,1,1.95,1.95V95.56a2,2,0,0,1-1.95,2H28.19a2,2,0,0,1-2-2V31.39a2,2,0,0,1,2-1.95Z"/>
            </svg>
-            Monthly Analytics
+             {isExpanded?('Monthly Analytics'):('')}
             </div>
           </NavLink>
         </div>
+        <button className='expand-sidenavabr' style={{backgroundColor:'rebeccapurple'}} onClick={HandleExpansion}>{isExpanded ?(<div className='sidebar-close-button'>Close</div> ):(<div className='sidebar-open-button'>Open</div>)}</button>
       </div>
     </>
   );

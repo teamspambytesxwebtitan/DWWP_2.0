@@ -11,14 +11,30 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const ViewAnalytics = ({ userId }) => {
   const [loading, setLoading] = useState(true); // Loading state
+  // const [usageData, setUsageData] = useState({
+  //   jan24: 0,
+  //   feb24: 0,
+  //   mar24: 0,
+  //   apr24: 0,
+  //   may24: 0,
+  //   currentMonth: 0, // Initialize currentMonth usage
+  // });
   const [usageData, setUsageData] = useState({
     jan24: 0,
     feb24: 0,
     mar24: 0,
     apr24: 0,
     may24: 0,
-    currentMonth: 0, // Initialize currentMonth usage
+    jun24: 0, // Include June
+    jul24: 0,
+    aug24: 0,
+    sep24: 0,
+    oct24: 0,
+    nov24: 0,
+    dec24: 0,
+    currentMonth: 0,
   });
+  
 
   useEffect(() => {
     const unsubscribeJan24 = onSnapshot(doc(db, 'users', userId, 'jan24', 'waterflowSensor'), (jan24Snap) => {
@@ -141,7 +157,7 @@ const ViewAnalytics = ({ userId }) => {
 
     if (usageData[usageKey]) {
       renderedMonths.push(
-        <li key={key}>
+        <li key={key} className='month-box'>
           <strong>{monthName} 2024 : {  ''}</strong>  { usageData[usageKey]} liters
         </li>
       );
@@ -185,13 +201,6 @@ const ViewAnalytics = ({ userId }) => {
             </p></ul>
           </div>
 
-          {/* Separate section for Current Month data */}
-          {/* <div className="current-month-section">
-            <h2>Current Month Data</h2>
-            <p>
-              <strong>{currentMonthFound ? monthCode[Object.keys(monthCode).find(key => !usageData[key.toLowerCase() + '24'])] + ' 2024' : 'N/A'}</strong>: {usageData.currentMonth} liters
-            </p>
-          </div> */}
           
         </main>
           

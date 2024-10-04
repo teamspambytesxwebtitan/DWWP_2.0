@@ -55,6 +55,12 @@ cd waterflow-management-system
 ### 2. Install dependencies
 ```bash
 npm install
+npm install -g firebase-tools
+firebase init functions
+cd functions
+npm install firebase-admin
+
+
 ```
 
 ### 3. Firebase Setup

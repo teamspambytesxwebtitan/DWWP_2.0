@@ -6,29 +6,37 @@
   color: aliceblue;
   scroll-behavior: smooth;
 }
-
+.nav ul{
+  background-color: transparent;
+}
 .nav li {
   display: table-cell;
-  padding: 2.2rem;
-  font-size: 1.5rem;
+  padding: 2.1rem;
+  font-size: 1.4rem;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease-in;
+  height:10px;
+  background-color: transparent;
 
-  
 }
 .nav li:hover {
+  background-color: transparent;
   transform: scale(1.1);
 }
 .header {
   width: 100vw;
   height: 10vh;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  backdrop-filter: blur(30px);
+  box-shadow: 0px 0px 30px rgba(277 , 228 , 237 ,0.37);
+  border: 2px solid rgba(225 , 225 ,255 , 0.18);
+  z-index: 10;
 
   /* background: linear-gradient(135deg, rgba(54,48,156,1) 13%, rgba(0,189,255,1) 63%, rgba(4,154,221,1) 100%, rgba(236,10,18,1) 100%); */
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
 
   color: aliceblue;
   position: fixed;
@@ -36,11 +44,13 @@
 .logo-icon{
   font-size: 3.5rem;
   color: aqua;
+  position: relative;
+  left: 5vw;
   
 }
 
 .login button{
- /* background:linear-gradient(to  right  , rgb(81, 12, 229) , rgb(47, 174, 237));
+ /* background:linear-gradient(to  right  , rgb(81, 12, 229) , rgb(47, 174, 237));
  background-color: red; */
  background: linear-gradient(135deg, #510ce5 , #2faeed);
   height: 50px;
@@ -63,22 +73,60 @@
   background-repeat: no-repeat;
 }
 .hero-text {
+  height: 50vh;
+  width: 40vw;
+  background: linear-gradient(to right, #510ce5, #2faeed);
   position: relative;
   top: 200px;
-  left: 100px;
+  border-bottom-right-radius: 40%;
+  box-shadow: 5px 5px 20px rgb(196, 195, 195);
+  
+  
   font-size: 2rem;
+  opacity: 0.8;
+  z-index: 1;
 }
 .hero-text h1{
- color: aqua;
+ color: rgb(4, 6, 71);
+ position: relative;
+ left: 50px;
+ top: 100px;
+ text-shadow: 0px 0px 10px rgb(241, 240, 240);
+
+
+}
+.get_service{
+  position: relative;
+  left: 250px;
+  top: 140px;
+}
+.get_service button{
+  height: 50px;
+  width: 200px;
+  color: black;
+  border-radius: 1.75rem;
+  outline: none;
+  background-color: #320989;
+  color: azure;
+  box-shadow: 2px 2px 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  border: 1px solid whitesmoke;
+  transition: all 0.5s ease;
+
+}
+.get_service button:hover{
+  transform: scale(1.1);
 }
 #second-line {
   position: relative;
-  left: 150px;
+  left: 200px;
 }
 .overlay {
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 .heading-text{
   background: linear-gradient(to right, #510ce5, #2faeed);
@@ -201,7 +249,7 @@ display: inline-block;
   border-radius: 10px;
 }
 .blogs-content .card .img4 {
-  background-image: url("https://media.assettype.com/saamtv%2F2024-04%2F17661712-b7df-493d-a324-17b5b09668e5%2F__2024_04_23T085727_467.jpg");
+  background-image: url("https://media.assettype.com/saamtv%2F2024-04%2F17661712-b7df-493d-a324-17b5b09668e5%2F____________________________________2024_04_23T085727_467.jpg");
   height: 200px;
   width: 280px;
   background-size: cover;
@@ -260,9 +308,10 @@ display: inline-block;
   margin: 10px;
   padding: 5px;
   font-size: 1rem;
-  color: black;
+  color: rgb(255, 248, 248);
   border-radius: 10px;
   box-shadow: 0px 0px 10px white;
+  background-color: rgb(21, 20, 20);
 
 }
 .form  form  textarea{
@@ -274,7 +323,8 @@ display: inline-block;
   font-size: 1rem;
   color: black;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px white;
+  box-shadow: 0px 0px 10px rgb(224, 220, 220);
+  background-color: rgb(21, 20, 20);
 }
 .form  form  button{
   height: 50px;
@@ -315,4 +365,4 @@ display: inline-block;
   position: absolute;
   font-size: 40px;
   
-}
+} 

@@ -4,7 +4,7 @@
     width: 50vw;
     margin: 10vh 30%;
     border-radius: 1rem;
-    background-color: #000000;
+    /* background-color: #e37f7f; */
     /* background-color: black; */
     padding: 20px;
     min-width: 50%;
@@ -26,10 +26,12 @@
 }
 .before-main{
     background-color: #1e1e1e;
+    /* background-color: rebeccapurple; */
     border-radius: 1rem;
     padding: 20px;  
     min-height: 50vh;
     max-width: 800px;
+    /* min-width: 80vw; */
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -168,3 +170,12 @@ h2 {
     }
 }
 
+@media (max-width: 768px) {
+    .waterflow-header h1{
+        font-size: 2rem;
+    }
+    .before-main{
+        min-width: 60vw;
+        padding: 0px;
+    }
+}

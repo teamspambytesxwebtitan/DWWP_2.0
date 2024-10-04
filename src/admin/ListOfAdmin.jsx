@@ -9,6 +9,8 @@ const ListOfAdmin = () => {
   const [newEmail, setNewEmail] = useState('');
   const [editIndex, setEditIndex] = useState(null);
   const [error, setError] = useState('');
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -38,7 +40,16 @@ const ListOfAdmin = () => {
     setError(''); // Clear any existing errors
   };
 
-  const handleSaveClick = async (index) => {
+  const handleSaveClick = () => {
+    setShowPasswordModal(true); // Show password modal
+  };
+
+  const handlePasswordSubmit = async () => {
+    if (password !== 'your_password_here') { // Replace with your actual password check
+      setError('Incorrect password. Please try again.');
+      return;
+    }
+
     if (!newEmail.trim()) {
       setError('Email cannot be empty.');
       return;
@@ -53,7 +64,7 @@ const ListOfAdmin = () => {
 
     try {
       const updatedAdmins = [...admins];
-      updatedAdmins[index] = newEmail.trim();
+      updatedAdmins[editIndex] = newEmail.trim();
 
       const adminDocRef = doc(db, 'admin', '01ListOfAdmin');
       await setDoc(adminDocRef, { admins: updatedAdmins });
@@ -62,6 +73,8 @@ const ListOfAdmin = () => {
       setEditIndex(null);
       setNewEmail('');
       setError('');
+      setShowPasswordModal(false); // Hide the password modal
+      setPassword(''); // Reset password
     } catch (err) {
       setError('Failed to update admin.');
       console.error(err);
@@ -72,6 +85,11 @@ const ListOfAdmin = () => {
     setEditIndex(null);
     setNewEmail('');
     setError('');
+  };
+
+  const closeModal = () => {
+    setShowPasswordModal(false);
+    setPassword('');
   };
 
   if (loading) {
@@ -89,7 +107,6 @@ const ListOfAdmin = () => {
         </div>
       ) : (
       <div className="admin-list-main">
-      {error && <p className="error-message">{error}</p>}
       <ul>
         {admins.map((admin, index) => (
           <li key={index}>
@@ -101,7 +118,7 @@ const ListOfAdmin = () => {
                   onChange={(e) => setNewEmail(e.target.value)}
                   placeholder="New Admin Email"
                 />
-                <button onClick={() => handleSaveClick(index)}>Save</button>
+                <button onClick={handleSaveClick}>Save</button>
                 <button className='cancel-click' onClick={handleCancelClick}>Cancel</button>
               </div>
             ) : (
@@ -115,8 +132,25 @@ const ListOfAdmin = () => {
       </ul>
       </div> 
     )}
+
+    {/* Password Modal */}
+    {showPasswordModal && (
+      <div className="modal-admin">
+        <div className="modal-admin-content">
+          
+          <span className="close" onClick={closeModal}>&times;</span>
+          <h2>Enter Password</h2>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          /> {error && <p className="error-message">{error}</p>}
+          <button onClick={handlePasswordSubmit}>Submit</button>
+        </div>
+      </div>
+    )}
     </div>
-     
   );
 };
 

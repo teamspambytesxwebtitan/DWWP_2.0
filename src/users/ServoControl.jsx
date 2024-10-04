@@ -28,7 +28,7 @@ const ServoControl = ({ userId }) => {
 
         if (servoSnap.exists()) {
           setServoState(servoSnap.data().servoState);
-          console.log("Initial servoState:", servoSnap.data().servoState);
+          // console.log("Initial servoState:", servoSnap.data().servoState);
         } else {
           console.log("No such servoControl document!");
         }
@@ -38,7 +38,7 @@ const ServoControl = ({ userId }) => {
           setMaxLimit(data.max || 200);
           setPenaltyLimit(data.penalty || 150);
           setRegularLimit(data.regular || 100);
-          console.log("Limits fetched:", data);
+          // console.log("Limits fetched:", data);
         } else {
           console.log("No such limit document!");
         }
@@ -55,7 +55,7 @@ const ServoControl = ({ userId }) => {
     const unsubscribeWaterUsage = onSnapshot(waterFlowDocRef, (docSnap) => {
       if (docSnap.exists()) {
         setTotalUsage(docSnap.data().totalusages || 0);
-        console.log("Water usage updated:", docSnap.data().totalusages || 0);
+        // console.log("Water usage updated:", docSnap.data().totalusages || 0);
       } else {
         console.log("No such waterflowSensor document!");
       }
@@ -65,7 +65,7 @@ const ServoControl = ({ userId }) => {
     const unsubscribeServoControl = onSnapshot(servoControlDocRef, (docSnap) => {
       if (docSnap.exists()) {
         setServoState(docSnap.data().servoState);
-        console.log("Servo state updated via Firestore:", docSnap.data().servoState);
+        // console.log("Servo state updated via Firestore:", docSnap.data().servoState);
       } else {
         console.log("No such servoControl document!");
       }
@@ -85,7 +85,7 @@ const ServoControl = ({ userId }) => {
         try {
           await updateDoc(servoControlDocRef, { servoState: false });
           setServoState(false);
-          console.log("Max limit exceeded. Servo turned off.");
+          // console.log("Max limit exceeded. Servo turned off.");
         } catch (error) {
           console.error("Error updating servoControl document: ", error);
         }
@@ -107,7 +107,7 @@ const ServoControl = ({ userId }) => {
     try {
       await updateDoc(servoControlDocRef, { servoState: newState });
       setServoState(newState);
-      console.log(`Servo state updated to: ${newState}`);
+      // console.log(`Servo state updated to: ${newState}`);
     } catch (error) {
       console.error("Error updating servoControl document: ", error);
     }
@@ -118,7 +118,7 @@ const ServoControl = ({ userId }) => {
     try {
       await updateDoc(waterFlowDocRef, { totalusages: newUsage }); // Update total usage in Firestore
       setTotalUsage(newUsage); // Update local state
-      console.log(`Total usage incremented to: ${newUsage}`);
+      // console.log(`Total usage incremented to: ${newUsage}`);
     } catch (error) {
       console.error("Error updating total usage: ", error);
     }
@@ -129,7 +129,7 @@ const ServoControl = ({ userId }) => {
     try {
       await updateDoc(waterFlowDocRef, { totalusages: newUsage }); // Update total usage in Firestore
       setTotalUsage(newUsage); // Update local state
-      console.log(`Total usage decremented to: ${newUsage}`);
+      // console.log(`Total usage decremented to: ${newUsage}`);
     } catch (error) {
       console.error("Error updating total usage: ", error);
     }
@@ -172,6 +172,10 @@ const ServoControl = ({ userId }) => {
 
   // if (loading) return <p className='load'>Loading...</p>;
 
+  const greenWidth = Math.min(totalUsage, regularLimit);
+  const orangeWidth = Math.min(Math.max(totalUsage - regularLimit, 0), penaltyLimit - regularLimit);
+  const redWidth = Math.min(Math.max(totalUsage - penaltyLimit, 0), maxLimit - penaltyLimit);
+
   return (
     <div className="servo-control-container">
       <header className="servo-control-header">
@@ -199,22 +203,26 @@ const ServoControl = ({ userId }) => {
           </label>
         </div>
 
-          {/* Progress Bar */}
-          <div className="usage-bar" >
-            <div className='filled-bar'
-              style={{ width: `${getUsagePercentage()}%`, backgroundColor: getBarColor() }}>
-            </div> 
-            Total Water Usage: {totalUsage} liters
+       
+          <div className="bar-container">
+            {(totalUsage<regularLimit)?(<>
+            <div className="bar">
+              <div className="bar-green" style={{ width: `${(greenWidth / regularLimit) * 100}%` }}></div>
+              {/* <div className="bar-orange" style={{ width: `${(orangeWidth / maxLimit) * 100}%` }}></div>
+              <div className="bar-red" style={{ width: `${(redWidth / maxLimit) * 100}%` }}></div> */}
+              </div>
+             <div className="total-usage">{`Total Usage: ${totalUsage}`}</div>
+             </>):(<>
+              <div className="bar">
+                <div className="bar-green" style={{ width: `${(greenWidth / maxLimit) * 100}%` }}></div>
+                <div className="bar-orange" style={{ width: `${(orangeWidth / maxLimit) * 100}%` }}></div>
+                <div className="bar-red" style={{ width: `${(redWidth / maxLimit) * 100}%` }}></div>
+                </div>
+              <div className="total-usage">{`Total Usage: ${totalUsage}`}</div>
+             </>)} 
           </div>
-          {/* <div
-              className="usage-bar"
-              style={{
-                width: `${Math.min((totalUsage / maxLimit) * 100, 100)}%`,
-                backgroundColor: getBarColor(),
-              }}
-            >
-            Total Water Usage: {totalUsage} liters
-          </div> */}
+         
+         
 
         </div>
         {/* Increment and Decrement Usage Buttons */}

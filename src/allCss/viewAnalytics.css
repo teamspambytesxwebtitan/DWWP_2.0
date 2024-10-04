@@ -94,12 +94,33 @@
   color: rgb(47, 174, 237); /* Light blue color for strong text */
 }
 
+
+
+.data-list::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.data-list::-webkit-scrollbar-track {
+  background: #333; /* Background color of the scrollbar track */
+  border-radius: 1rem; /* Rounded corners for track */
+}
+
+.data-list::-webkit-scrollbar-thumb {
+  background: #555; /* Color of the scrollbar thumb */
+  border-radius: 1rem; /* Rounded corners for thumb */
+}
+
+.data-list::-webkit-scrollbar-thumb:hover {
+  background: #777; /* Color of the scrollbar thumb on hover */
+}
 /* Responsive Design */
 @media (max-width: 600px) {
   .view-analytics-main {
-    width: 60vw;
-    margin-left: 10px;
+    width: 70vw;
+    overflow: auto;
+    margin-left: 0px;
     flex-direction: column;
+    /* background-color: red; */
   }
 
   .data-list {
@@ -113,12 +134,14 @@
 
   .chart-container,
   .data-list {
-    width: 100%;
+    width: 80%;
+    /* background-color: red; */
+  }
+  .chart-container{
+    max-height: 20vh;
   }
 
   .data-list ul {
     min-width: 100%; /* Make list items full-width on small screens */
   }
 }
-
-

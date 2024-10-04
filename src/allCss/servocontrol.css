@@ -137,6 +137,51 @@ input:checked + .slider:before {
   font-size: 1.2em;
 }
 
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.bar {
+  display: flex;
+  width: 100%;
+  height: 30px;
+  background-color: #e0e0e0; /* Grey background for empty bar */
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 1rem;
+}
+
+.bar-green {
+  background-color: green;
+  height: 100%;
+}
+
+.bar-orange {
+  background-color: orange;
+  height: 100%;
+}
+
+.bar-red {
+  background-color: red;
+  height: 100%;
+}
+
+.total-usage {
+  /* position: relative;
+  top: -2rem; */
+  mix-blend-mode:difference ;
+  box-shadow:0px 0px 10px black ;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
 .blink {
   animation: blink-animation 1s steps(5, start) infinite;
 }
