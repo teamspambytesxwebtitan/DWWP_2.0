@@ -1,6 +1,3 @@
-Here’s the updated `README.md` file, incorporating the real-time updates with Firestore functionality and other relevant information based on the modifications made in your project.
-
-```markdown
 # Domestic Water Wastage Prevention System
 
 This project is a **Domestic Water Wastage Prevention System** that interfaces with Firebase Firestore to fetch and update water flow data and control servo gates using a React frontend. The project includes two primary functionalities:
@@ -183,11 +180,3 @@ This project is open-source and available under the [MIT License](LICENSE).
 - Subhayan Kapas - [Developer](https://www.linkedin.com/in/subhayan-kapas-003009250?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
 
 #
-```
-
-### Key Updates:
-- Added real-time data fetching and updates in the usage section.
-- Clarified the database structure and Firebase setup.
-- Provided details on how the application interacts with Firestore.
-
-Feel free to make any adjustments or let me know if you need further modifications!
