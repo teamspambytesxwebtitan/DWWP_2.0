@@ -179,24 +179,79 @@
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content-selected-user {
   background-color: #0000003d;
   backdrop-filter: blur(10px);
-  border: 2px solid green;
-  box-shadow: 0px 0px 20px green , inset -5px -5px 5px green, inset 5px 5px 5px green;
+  border: 1px solid rgb(252, 255, 252);
   padding: 20px;
   border-radius: 1rem;
   width: 80%;
   max-width: 800px;
-  min-height:60vh ;
+  min-height:70vh ;
+  max-height: 50vh;
   position: relative;
   color: #000000;
+  overflow: auto;
+  /* box-shadow: 0px 0px 20px white; */
 }
-.modal-content h2{
+/* Custom scrollbar styling */
+.modal-content-selected-user::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.modal-content-selected-user::-webkit-scrollbar-track {
+  background: #333; /* Background color of the scrollbar track */
+  border-radius: 1rem; /* Rounded corners for track */
+}
+
+.modal-content-selected-user::-webkit-scrollbar-thumb {
+  background: #555; /* Color of the scrollbar thumb */
+  border-radius: 1rem; /* Rounded corners for thumb */
+}
+
+.modal-content-selected-user::-webkit-scrollbar-thumb:hover {
+  background: #777; /* Color of the scrollbar thumb on hover */
+}
+.modal-content-selected-user h2{
   margin-top: 1rem;
   display: flex;
   justify-content: center;
   /* background-color: red; */
+}
+.selected-user-profile-details{
+  background-color: red;
+  max-height: 10vh;
+}
+
+.selected-user-profile-details-others{
+  min-height: 5vh;
+  margin-top: 1rem;
+  background-color: blue;
+}
+.profile-id{
+  margin-left: 5%;
+}
+.profile-name{
+  margin-left: 5%;
+}
+.profile-aadhar, .profile-address, .profile-phone{
+  margin: 0 1rem;
+  padding: .5rem;
+  border-radius: .5rem;
+  overflow: auto;
+  min-width: 25%;
+}
+.profile-aadhar{
+  background-color:rgb(106, 137, 6);
+ 
+}
+.profile-phone{
+  background-color:rgb(137, 58, 6);
+ 
+}
+.profile-address{
+  background-color:rgb(6, 87, 137);
+ 
 }
 /* Close Button */
 .close-button {
@@ -217,6 +272,8 @@
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
+  /* background-color: rgb(66, 83, 66); */
+  overflow: auto;
 }
 .servo-and-price-box{
   width: 100%;
@@ -279,37 +336,9 @@
 
 .user-details p {
   margin: 5px 0;
+  /* background-color: red; */
 }
 
-.user-profile-details-others{
-  margin: .5rem;
- display: flex;
-}
-.profile-id{
-  margin-left: 5%;
-}
-.profile-name{
-  margin-left: 5%;
-}
-.profile-aadhar, .profile-address, .profile-phone{
-  margin: 0 1rem;
-  padding: .5rem;
-  border-radius: .5rem;
-  overflow: auto;
-  min-width: 25%;
-}
-.profile-aadhar{
-  background-color:rgb(106, 137, 6);
- 
-}
-.profile-phone{
-  background-color:rgb(137, 58, 6);
- 
-}
-.profile-address{
-  background-color:rgb(6, 87, 137);
- 
-}
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .admin-dashboard-main{

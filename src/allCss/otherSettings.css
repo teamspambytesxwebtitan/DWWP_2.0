@@ -3,8 +3,6 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    /* background: linear-gradient(to right, #ece9e6, #ffffff); */
-    background-color: black;
   }
   
   .glass-card-22 {
@@ -16,9 +14,13 @@
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     width: 300px;
-    text-align: center;
+    text-align: center; 
   }
-  
+  .glass-card-22 h2{
+    border-radius: .5rem;
+    padding: 1rem;
+    background:linear-gradient(135deg , #013e7e,#007BFF, #013e7e);
+  }
   .month-dropdown {
     padding: 10px;
     margin: 15px 0;

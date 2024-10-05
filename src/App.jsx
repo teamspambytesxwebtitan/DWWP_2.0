@@ -1,8 +1,3 @@
-
-
-
-// src/App.jsx
-
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
@@ -18,7 +13,7 @@ import Userlayout from './users/userlayout';
 import Authentic from './authentication/Authentic'; // Adjust the import path as needed
 import { UserContext } from './authentication/UserContext';
 import ListOfAdmin from './admin/ListOfAdmin';
-import Hello from './admin/Hello';
+import OtherSettings from './admin/OtherSettings';
 
 
 function App() {
@@ -39,7 +34,7 @@ function App() {
           <Route path="setprice" element={<SetPrice />} />
           <Route path="viewusers" element={<AdminViewAllUsers />} />
           <Route path="listofadmin" element={<ListOfAdmin />} />
-          <Route path="hello" element={<Hello />} />
+          <Route path="other-settings" element={<OtherSettings />} />
         </Route>
 
         {/* User Routes */}

@@ -5,7 +5,7 @@
   position: relative;
 }
 
-.profile-container {
+.profile-container-user {
   height: auto; /* Adjusted to fit content */
   position: absolute;
   top: 1.5rem;
@@ -20,18 +20,18 @@
   font-family: Arial, sans-serif;
 }
 
-.profile-info {
+.profile-info-user {
   text-align: right;
 }
 
-.profile-name {
+.profile-name-user {
   font-weight: bold;
   display: block;
   font-size: 1.5rem; /* Larger font for readability */
   color: #fff; /* White text for name */
 }
 
-.profile-email {
+.profile-email-user {
   color: #ccc; /* Light gray for email */
   font-size: 1.1rem;
 }
@@ -86,50 +86,74 @@
   background-color: #1a1a1a;
 }
 
-.profile-container1 {
-  min-height: 30vh;
-  width: 100%; /* Adjusted for better responsiveness */
+.profile-container-show-user {
+  /* min-height: 40vh; */
+  height: 45vh;
+ 
+  width: 80%; /* Adjusted for better responsiveness */
   max-width: 700px; /* Increased max-width for better layout */
-  background-color: #111211; /* Consistent dark background */
+  background-color: #1112113e; /* Consistent dark background */
   backdrop-filter: blur(20px); /* Blurring effect */
   padding: 20px;
   border: 2px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
   border-radius: 12px; /* Rounded corners */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Soft shadow */
+  box-shadow: 0 4px 20px rgba(201, 201, 201, 0.3); /* Soft shadow */
   color: white; /* Text color for contrast */
-  position: relative; /* For positioning the close button */
+  position: relative; /* For positioning the -butt button */
 }
 
-.profile-info1 {
+.profile-info-show-user {
+  width: 80%;
+  margin: 1rem 0rem 0 1rem;
+  max-height: 5rem;
   text-align: center;
   margin-bottom: 50px;
+  margin: 30px auto;
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 }
-.profile-name{
+.profile-name-show-user{
+  display: block;
   margin: 1rem;
+  font-size: 2rem;
+}
+.profile-email-show-user{
+  margin-left: 1rem;
+  font-size: 1.4rem;
 }
 .profile-phone, .profile-aadhar , .profile-address{
   margin: 10rem .1rem;
   overflow: auto;
 } 
-.overlay22 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensure it's on top */
+
+.curve-path{
+    width: 200px;
+    height: 100px;
+    background-color: #3498db;
+    border-radius: 100px; /* Makes it curved */
+    position: relative;
+    overflow: hidden;
 }
-
-
-
+.basic-user-details{
+  /* background-color: red; */
+  /* clip-path: ellipse(50% 40% at 50% 100%); */
+  width: 80%;
+  background-color: #0451a2;
+  background: linear-gradient(160deg , #012a55, #012a55, #1977dc);
+  padding: 1rem;
+  margin: 0 auto;
+  border-radius: .5rem;
+}
 .update-button {
   background-color: #0451a2;;
   color: white;
   border: none;
+  margin-top: 1rem;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
@@ -143,9 +167,7 @@
 .update-button:hover {
   background-color: #0056b3;
 }
-.update-form-container{
-  background-color: #218838;
-}
+
 
 .overlay22 {
   position: fixed;
@@ -153,14 +175,14 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background: rgba(0, 0, 0, 0.668); /* Semi-transparent background */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000; /* Ensure it's on top */
 }
 
-.profile-container1, .update-form-container {
+.profile-container-1, .update-form-container {
   border: 1px solid white ;
   border-radius: 1rem;
   /* background: white; Make it visible */
@@ -168,31 +190,23 @@
   /* border-radius: 5px; */
   z-index: 1001; /* Higher than overlay */
 }
-
-.update-form-container button {
-  /* background-color: #28a745; */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
-}
-
 .update-form-container {
-  border: 2px solid white;
+  border: 1px solid rgb(150, 148, 148);
   border-radius: 1rem;
   min-width:500px ;
-  background-color: #111211;
+  background-color: #11121151;
+  backdrop-filter: blur(8px);
   margin-top: 20px;
   text-align: center;
-
+  box-shadow: 0 4px 20px rgba(201, 201, 201, 0.3); /
 }
+
+
 .update-form-container h3{
-  position: relative;
-  top: -3vh;
+  /* position: relative; */
+  /* top: -3vh; */
+  font-size: 2rem;
+  padding: .5rem;
 }
 
 .update-form-container input {
@@ -241,26 +255,38 @@
   flex-direction: row-reverse;
 }
 .close-button-for-update{
-  border-radius: 50%;
-  /* background-color: red; */
+  border-radius: 1rem;
+  background-color: red;
+  width: 2.5rem;
+  position: relative;
+  left:45%;
+  padding: 1rem;
+}
+.close-button-for-update:hover{
+  background-color: rgb(252, 116, 116);
 }
 @media (max-width: 600px) {
+  .profile-container-show-user{
+    height: 60vh;
+    width: 80%;
+  }
   .profile-container {
     width: 35%;
     padding: 15px;
     overflow: auto;
     flex-direction: column;
   }
-  .update-form-container22{
+  .update-form-container{
     /* background-color: red; */
-    width: 0vw;
+    max-width: 60vw;
     min-height: 50vh;
-    background-color:blue;
+    /* background-color:blue; */
   }
-  /* .update-button, 
-  .update-form-container button {
-    /* width: 100%; 
-  } */
+  .profile-info-show-user{
+    min-height: 8rem;
+    /* background-color: red; */
+    flex-wrap: wrap;
+  }
   .profile-info1{
     /* background-color: red; */
     flex-direction: column;
@@ -272,9 +298,14 @@
     width: 95%; /* Adjust width for smaller screens */
     max-width: 90%; /* Reduce max-width for better fit */
   }
-  .update-button{
+  .update-form-container{
+    max-width: 80vw;
+    /* background-color: red; */
+  }
+  .update-form-containe button{
     width: 100%;
     left: 0px;
+    background-color: #4CAF50;
   }
 }
 @media (min-width: 600px ) and (max-width: 768px) { 
@@ -287,6 +318,7 @@
   }
   .update-form-container{
     /* background-color: rgb(0, 255, 68); */
-    width: 0vw;
+    max-width: 30vw;
+    /* background-color: red; */
   }
 }

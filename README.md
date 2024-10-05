@@ -1,6 +1,9 @@
+Here’s the updated `README.md` file, incorporating the real-time updates with Firestore functionality and other relevant information based on the modifications made in your project.
+
+```markdown
 # Domestic Water Wastage Prevention System
 
-This project is a ** Domestic Water Wastage Prevention System** that interfaces with Firebase Firestore to fetch and update water flow data and control servo gates using a React frontend. The project includes two primary functionalities:
+This project is a **Domestic Water Wastage Prevention System** that interfaces with Firebase Firestore to fetch and update water flow data and control servo gates using a React frontend. The project includes two primary functionalities:
 - **Servo Control**: For opening and closing the servo-controlled gate.
 - **WaterFlow Data**: For displaying real-time water usage and flow rate.
 
@@ -13,6 +16,7 @@ This project is a ** Domestic Water Wastage Prevention System** that interfaces 
 - [Usage](#usage)
 - [Folder Structure](#folder-structure)
 - [License](#license)
+- [Contributors](#contributors)
 
 ---
 
@@ -20,15 +24,15 @@ This project is a ** Domestic Water Wastage Prevention System** that interfaces 
 
 The project consists of two main components:
 
-1. **ServoControl**: Allows the admin to open and close a gate by controlling the servo motor. This updates the `servoState` field in the Firestore.
-2. **WaterFlow**: Displays the water flow data, including `flowRate` and `totalUsage` fetched from the Firestore `WaterFlow` collection.
+1. **ServoControl**: Allows the admin to open and close a gate by controlling the servo motor. This updates the `servoState` field in Firestore.
+2. **WaterFlow**: Displays the water flow data, including `flowRate` and `totalUsage`, fetched from the Firestore `WaterFlow` collection in real-time.
 
 ---
 
 ## Features
 
 - **Servo Control**: Open and close the gate using buttons that update the Firestore `servoState` field.
-- **Real-Time Water Data**: Fetch and display real-time `flowRate` and `totalUsage` from Firestore.
+- **Real-Time Water Data**: Fetch and display real-time `flowRate` and `totalUsage` from Firestore, with automatic updates upon changes.
 - **Firebase Firestore Integration**: Seamless interaction with Firebase for fetching and updating data.
 
 ---
@@ -59,8 +63,6 @@ npm install -g firebase-tools
 firebase init functions
 cd functions
 npm install firebase-admin
-
-
 ```
 
 ### 3. Firebase Setup
@@ -89,46 +91,43 @@ const firebaseConfig = {
 
 2. Ensure your Firestore database has the following structure:
    ```
-	users[
-	user1[
-		currentMonth[
-			servoControl[servoState:1],
-			waterflowSensor[totalusages:214]
-		],
-		jan24[
-			servoControl[servoState:1],
-			waterflowSensor[totalusages:214]
-		],
- 
-		feb24[
-			servoControl[servoState:1],
-			waterflowSensor[totalusages:214]
-		],
+   users[
+       user1[
+           currentMonth[
+               servoControl[servoState:1],
+               waterflowSensor[totalusages:214]
+           ],
+           jan24[
+               servoControl[servoState:1],
+               waterflowSensor[totalusages:214]
+           ],
+           feb24[
+               servoControl[servoState:1],
+               waterflowSensor[totalusages:214]
+           ]
+       ],
+       user2[
+           currentMonth[
+               servoControl[servoState:1],
+               waterflowSensor[totalusages:214]
+           ],
+           jan24[
+               servoControl[servoState:1],
+               waterflowSensor[totalusages:214]
+           ],
+           feb24[
+               servoControl[servoState:1],
+               waterflowSensor[totalusages:214]
+           ]
+       ]
+   ]
 
-	],
-	user2[
-		currentMonth[
-			servoControl[servoState:1],
-			waterflowSensor[totalusages:214]
-		],
-		jan24[
-			servoControl[servoState:1],
-			waterflowSensor[totalusages:214]
-		],
- 
-		feb24[
-			servoControl[servoState:1],
-			waterflowSensor[totalusages:214]
-		],
-
-	],
-	]
-	
-	admin[
-		limit[max:200,penalty:150, regular:100],
-		price[penaltyPrice:2, regularPrice:.4],
-		01ListOfAdmin[admins:["admin@gmail.com", "admin2@gmail.com"]]
-	]
+   admin[
+       limit[max:200,penalty:150, regular:100],
+       price[penaltyPrice:2, regularPrice:0.4],
+       01ListOfAdmin[admins:["admin@gmail.com", "admin2@gmail.com"]]
+   ]
+   ```
 
 ---
 
@@ -143,7 +142,7 @@ npm run dev
 Navigate to `http://localhost:3000` to view the project.
 
 - **Servo Control**: Open/close the gate using the buttons in the `ServoControl` component.
-- **Water Flow Data**: Real-time display of `flowRate` and `totalUsage` in the `WaterFlow` component.
+- **Water Flow Data**: Real-time display of `flowRate` and `totalUsage` in the `WaterFlow` component, with updates whenever changes occur in Firestore.
 
 ---
 
@@ -180,8 +179,15 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 ## Contributors
 
-- Akash Bera- [Developer](https://www.linkedin.com/in/akash-bera-5a3009250/)
-- Subhayan Kapas- [Developer](https://www.linkedin.com/in/subhayan-kapas-003009250?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
-
+- Akash Bera - [Developer](https://www.linkedin.com/in/akash-bera-5a3009250/)
+- Subhayan Kapas - [Developer](https://www.linkedin.com/in/subhayan-kapas-003009250?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
 
 #
+```
+
+### Key Updates:
+- Added real-time data fetching and updates in the usage section.
+- Clarified the database structure and Firebase setup.
+- Provided details on how the application interacts with Firestore.
+
+Feel free to make any adjustments or let me know if you need further modifications!

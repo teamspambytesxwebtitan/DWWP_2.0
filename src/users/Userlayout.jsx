@@ -97,11 +97,11 @@ function Userlayout() {
   return (
     <div className="user-layout">
       <UserSidebar />
-      <div className="profile-container">
-        <div className="profile-info">
+      <div className="profile-container-user">
+        <div className="profile-info-user">
           {user ? (
             <>
-              <span className="profile-email">{user.email}</span>
+              <span className="profile-email-user">{user.email}</span>
               <button className="arrow-button" onClick={toggleExpansion}>
                 {isExpanded ? (
                   // SVG for expanded state
@@ -139,17 +139,21 @@ function Userlayout() {
       {/* Overlay for User Profile */}
       {showUserProfile && (
         <div className="overlay22">
-          <div className="profile-container1" onClick={(e) => e.stopPropagation()}>
+          <div className="profile-container-show-user" onClick={(e) => e.stopPropagation()}>
+            {/* <div className="curve-path"></div> */}
             <button className="close-button" onClick={() => setShowUserProfile(false)}>X</button>
-            <div className="profile-info1">
-              <span className="profile-email">{userData.email}</span>
-              <span className="profile-name">Customer Name: {userData.displayName || "error"}</span>
-              <span className="profile-phone">Phone Number: {userData.phoneNumber}</span>
-              <span className="profile-aadhar">Aadhar Number: {userData.aadharNumber}</span><br/>
-              <span className="profile-address">Address: {userData.address}</span>
-            </div> 
+            <div className="basic-user-details">
+              <span className="profile-email-show-user">{userData.email}</span>
+              <span className="profile-name-show-user">Name: {userData.displayName || "error"}</span>
+            </div>
             <hr />
-              <button className="update-button" onClick={toggleUpdateUser}>Update Details</button>
+            <div className="profile-info-show-user">
+              <div className="profile-phone-show-user">Phone Number: {userData.phoneNumber}</div>
+              <div className="profile-aadhar-show-user">Aadhar Number: {userData.aadharNumber}</div>
+              <div className="profile-address-show-user">Address: {userData.address}</div>
+            </div> 
+            <hr/>
+            <button className="update-button" onClick={toggleUpdateUser}>Update Details</button>
           </div>
         </div>
       )}
@@ -158,10 +162,10 @@ function Userlayout() {
       {showUpdateUser && (
         <div className="overlay22">
           <div className="update-form-container" onClick={(e) => e.stopPropagation()}>
-            <div className="close-button-container"> 
-              <button className="close-button-for-update" onClick={() => setShowUpdateUser(false)}>X</button>
-            </div>
-         
+            {/* <div className="close-button-container"> 
+             
+            </div> */}
+            <button className="close-button " onClick={() => setShowUpdateUser(false)}>X</button>
             <h3>Update Your Details</h3>
           
             <label>
@@ -200,7 +204,7 @@ function Userlayout() {
                 onChange={handleInputChange}
               />
             </label><br/>
-            <button onClick={handleUpdate}>Save Changes</button>
+            <button  onClick={handleUpdate}>Save Changes</button>
           </div>
         </div>
       )}

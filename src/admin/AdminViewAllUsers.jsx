@@ -28,6 +28,7 @@ const AdminDashboard = () => {
     address: ''
   });
 
+   // Track auth state and user details in Firestore  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -50,7 +51,7 @@ const AdminDashboard = () => {
     });
     return () => unsubscribe();
   }, []);
-  
+
 
   // Fetch all users
   const fetchAllUsers = async () => {
@@ -328,21 +329,26 @@ const AdminDashboard = () => {
       {/* Modal for User Details */}
       {selectedUser && (
         <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>User Details</h2>
+          <div className="modal-content-selected-user" onClick={(e) => e.stopPropagation()}>
+          
             <button className="close-button" onClick={handleCloseModal}>X</button>
             <div className="user-details">
-              <div className="admin-user-profile-details">
-                <span className="profile-id">User ID: {selectedUser.userId}</span>
-                <span className="profile-name">Customer Name: {selectedUser.userDetails.displayName  ||"N/A"}</span>
-                <div className="user-profile-details-others">
-                  <span className="profile-phone">Phone Number: {selectedUser.userDetails.phoneNumber ||"N/A"}</span>
-                  <span className="profile-aadhar">Aadhar Number: {selectedUser.userDetails.aadharNumber ||"N/A"}</span>
-                  <span className="profile-address">Address: {selectedUser.userDetails.address ||"N/A"}</span>
-                </div>
-              </div>
-              <hr />
-              <h2>Usage Details</h2>
+          
+                {/* <div className="curve-path"></div> */}
+                <button className="close-button" onClick={handleCloseModal}>X</button>
+                  <div className="basic-user-details-">
+                    <h2>User Details</h2>
+                    <span className="profile-email-show-user">{selectedUser.userId}</span>
+                    <span className="profile-name-show-user">Name: {selectedUser.userDetails.displayName  || "N/A"}</span>
+                  </div>
+                  <hr />
+                  <div className="profile-info-show-user">
+                    <div className="profile-phone-show-user">Phone Number: {selectedUser.userDetails.phoneNumber ||"N/A"}</div>
+                    <div className="profile-aadhar-show-user">Aadhar Number: {selectedUser.userDetails.aadharNumber ||"N/A"}</div>
+                    <div className="profile-address-show-user">Address: {selectedUser.userDetails.address ||"N/A"}</div>
+                  </div> 
+                   <hr/>  
+              <h2>Usages Details</h2>
               <div className="user-view-used-details">
                 <div className="servo-and-price-box">
                   <div className="servo-state-box ">
@@ -352,6 +358,9 @@ const AdminDashboard = () => {
                     <p><strong>Due Bills :</strong> {totalPrice.toFixed(2)}</p>
                   </div>
                 </div>
+
+{/* new */}
+                
                 {/* {Object.keys(monthCode).map((key) => {
                   const monthData = selectedUser[key + '24'];
                   
@@ -377,17 +386,6 @@ const AdminDashboard = () => {
                       </div>
                     );
                   }
-
-                  // If we encounter the first month with zero usage, break the loop
-                  // if (monthData && monthData.totalUsage === 0) {
-                  //   // Ensure current month data is displayed just before the zero usage
-                  //   return (
-                  //     <div key="currentMonth" className="month-box current-month-box">
-                  //       <h4>Current Month</h4>
-                  //       <p>Total Usage: {selectedUser.currentMonth.totalUsage}</p>
-                  //     </div>
-                  //   );
-                  // }
 
                     return null; // Skip the months after the first zero-usage month
                   })}

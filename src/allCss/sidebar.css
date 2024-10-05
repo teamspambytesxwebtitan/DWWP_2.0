@@ -87,6 +87,20 @@
   z-index: 101;
   display: none;
   /* left: 10%; */
+  background-color: transparent;
+  &:hover{
+    background-color: transparent;
+  }
+}
+.expand-sidenavabr svg{
+  background-color: transparent;
+  color: transparent;
+  width: 2rem;
+  height: 2rem;
+}
+.sidebar-close-button{
+  /* background-color: #4ec0f5; */
+  transform: translate(15rem);
 }
 .space-for-sidenav-h1{
   position: absolute;
