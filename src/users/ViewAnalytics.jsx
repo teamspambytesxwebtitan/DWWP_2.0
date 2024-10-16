@@ -10,15 +10,7 @@ import { color } from 'chart.js/helpers';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const ViewAnalytics = ({ userId }) => {
-  const [loading, setLoading] = useState(true); // Loading state
-  // const [usageData, setUsageData] = useState({
-  //   jan24: 0,
-  //   feb24: 0,
-  //   mar24: 0,
-  //   apr24: 0,
-  //   may24: 0,
-  //   currentMonth: 0, // Initialize currentMonth usage
-  // });
+  const [loading, setLoading] = useState(true); 
   const [usageData, setUsageData] = useState({
     jan24: 0,
     feb24: 0,
@@ -194,11 +186,12 @@ const ViewAnalytics = ({ userId }) => {
             <Line data={data} />
           </div>
           
-          <div className="data-list">
-            <ul>{renderedMonths}</ul>
-            <ul> <p>
+          <div className="data-list-monthly ">
+             <ul> 
               <strong>{currentMonthFound ? monthCode[Object.keys(monthCode).find(key => !usageData[key.toLowerCase() + '24'])] + ' 2024' : 'N/A'}</strong>  : {usageData.currentMonth} liters
-            </p></ul>
+            </ul>
+            <ul className="reversed-months">{renderedMonths}</ul>
+    
           </div>
 
           

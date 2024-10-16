@@ -12,6 +12,8 @@ const WaterFlow = ({ userId }) => {
 
   const [loading, setLoading] = useState(true); // Loading state
 
+  const [maxLimit, setMaxLimit] = useState(200)
+
   // States to track if each data point has been fetched
   const [isWaterFlowFetched, setIsWaterFlowFetched] = useState(false);
   const [isPriceFetched, setIsPriceFetched] = useState(false);
@@ -102,6 +104,47 @@ const WaterFlow = ({ userId }) => {
   const penaltyPriceTotal = penaltyUsage * penaltyPrice;
   const totalPrice = regularPriceTotal + penaltyPriceTotal;
 
+
+
+
+
+
+  // useEffect(() => {
+  //   // Monitor totalUsage and update servoState if necessary
+  //   const checkUsageAndUpdateServo = async () => {
+  //     if (totalUsage >= maxLimit && servoState) {
+  //       try {
+  //         await updateDoc(servoControlDocRef, { servoState: false });
+  //         setServoState(false);
+  //         // console.log("Max limit exceeded. Servo turned off.");
+  //       } catch (error) {
+  //         console.error("Error updating servoControl document: ", error);
+  //       }
+  //     }
+  //   };
+
+  //   checkUsageAndUpdateServo();
+  // }, [totalUsage, maxLimit, servoState, servoControlDocRef]);
+
+  const getBarColor = () => {
+    if (totalUsage < regularLimit) return '#90EE90'; // Green
+    if (totalUsage >= regularLimit && totalUsage < maxLimit) return '#ff9900'; // Orange
+    return 'red'; // Red
+  };
+  
+  const getUsagePercentage = () => {
+    if (totalUsage <= penaltyLimit) {
+      return (totalUsage / maxLimit) * 100;
+    } else {
+      return 100; // Cap at 100%
+    }
+  };
+  const isUsageExceeded = totalUsage >= maxLimit;
+  
+  const greenWidth = Math.min(totalUsage, regularLimit);
+  const orangeWidth = Math.min(Math.max(totalUsage - regularLimit, 0), penaltyLimit - regularLimit);
+  const redWidth = Math.min(Math.max(totalUsage - penaltyLimit, 0), maxLimit - penaltyLimit);
+
   return (
     <div className="waterflow-container">
       <header className="waterflow-header">
@@ -113,7 +156,22 @@ const WaterFlow = ({ userId }) => {
         </div>
       ) : (
         <div className="before-main">
-          <p className='usages-title'><strong>Total Usage (liters):</strong> {totalUsage}</p>
+          <p className='usages-title '>Total Usage (liters):<strong> {totalUsage}</strong></p>
+
+          <div className="bar-container">
+            {(totalUsage<regularLimit)?(
+            <div className="bar">
+              <div className="bar-green" style={{ width: `${(greenWidth / regularLimit) * 100}%` }}></div>
+            </div>
+             ):(
+              <div className="bar">
+                <div className="bar-green" style={{ width: `${(greenWidth / maxLimit) * 100}%` }}></div>
+                <div className="bar-orange" style={{ width: `${(orangeWidth / maxLimit) * 100}%` }}></div>
+                <div className="bar-red" style={{ width: `${(redWidth / maxLimit) * 100}%` }}></div>
+              </div>
+             )} 
+          </div>
+
           <main className="waterflow-main">
             {/* Regular Price Section */}
             <div className="price-row">
@@ -132,6 +190,11 @@ const WaterFlow = ({ userId }) => {
               <p>Total Price ₹{totalPrice.toFixed(2)}</p>
             </div>       
           </main> 
+
+         
+          
+
+
         </div>
       )}
     </div>

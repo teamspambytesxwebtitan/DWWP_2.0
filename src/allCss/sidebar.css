@@ -1,6 +1,6 @@
 .sidenav {
   position: fixed;
-  max-width: 20rem;
+  max-width: 16rem;
   top: 0;
   left: 10px;
   z-index: 100;
@@ -30,7 +30,7 @@
 }
 
 .nav-link {
-  font-size: 1.2rem; /* Increased font size */
+  font-size: 1rem; /* Increased font size */
   font-weight: bold; /* Bold text */
   color: white;
   text-decoration: none; /* Remove underline */

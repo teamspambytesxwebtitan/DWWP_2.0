@@ -14,13 +14,15 @@ import Authentic from './authentication/Authentic'; // Adjust the import path as
 import { UserContext } from './authentication/UserContext';
 import ListOfAdmin from './admin/ListOfAdmin';
 import OtherSettings from './admin/OtherSettings';
+// import PaymentForm from './payment/PaymentForm';
+import Payment from './users/Payment';
 
 
 function App() {
   const user = useContext(UserContext);
 
   return (
-    <Router>
+    <Router  basename="/Domestic_Water_Prevention-System">
       <Routes>
         {/* Landing Page Route */}
         <Route path="/" element={<LandingPage />} />
@@ -44,6 +46,8 @@ function App() {
               <Route path="servoControl" element={<ServoControl userId={user.email} />} />
               <Route path="waterflow" element={<Waterflow userId={user.email} />} />
               <Route path="viewanalytics" element={<ViewAnalytics userId={user.email} />} />
+              {/* <Route path="pay" element={<PaymentForm />} /> */}
+              <Route path="payment" element={<Payment userId={user.email} />} />
             </>
           ) : (
             <Route path="*" element={<Authentic />} /> // Redirect to login if not authenticated

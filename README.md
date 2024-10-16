@@ -1,9 +1,10 @@
+
 # Domestic Water Wastage Prevention System
 
-This project is a **Domestic Water Wastage Prevention System** that interfaces with Firebase Firestore to fetch and update water flow data and control servo gates using a React frontend. The project includes two primary functionalities:
+This project is a **Domestic Water Wastage Prevention System** that interfaces with Firebase Firestore to manage water flow data, control servo gates, and facilitate user payments through a React frontend. The system encompasses various functionalities, including:
 - **Servo Control**: For opening and closing the servo-controlled gate.
 - **WaterFlow Data**: For displaying real-time water usage and flow rate.
-
+- **Payment Integration**: Users can make payments for the services offered by the Domestic Water Wastage Prevention System through Razorpay, supporting multiple payment methods and providing instant confirmation of transactions.
 ## Table of Contents
 - [Project Structure](#project-structure)
 - [Features](#features)
@@ -12,6 +13,7 @@ This project is a **Domestic Water Wastage Prevention System** that interfaces w
 - [Firebase Configuration](#firebase-configuration)
 - [Usage](#usage)
 - [Folder Structure](#folder-structure)
+- [Payment Integration](#payment-integration)
 - [License](#license)
 - [Contributors](#contributors)
 
@@ -31,6 +33,7 @@ The project consists of two main components:
 - **Servo Control**: Open and close the gate using buttons that update the Firestore `servoState` field.
 - **Real-Time Water Data**: Fetch and display real-time `flowRate` and `totalUsage` from Firestore, with automatic updates upon changes.
 - **Firebase Firestore Integration**: Seamless interaction with Firebase for fetching and updating data.
+- **Payment Integration**:  Users can make payments for the services offered by the Domestic Water Wastage Prevention System through Razorpay, supporting multiple payment methods and providing instant confirmation of transactions
 
 ---
 
@@ -40,6 +43,7 @@ The project consists of two main components:
 - **Firebase** (Firestore)
 - **React Router** (for routing)
 - **Vite** (for fast builds)
+- **Razorpay** (for Payment Integration)
 
 ---
 
@@ -60,6 +64,12 @@ npm install -g firebase-tools
 firebase init functions
 cd functions
 npm install firebase-admin
+
+npm i firebase
+npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
+npm install react-chartjs-2 chart.js
+npm install react-scroll
+npm install dotenv
 ```
 
 ### 3. Firebase Setup
@@ -88,42 +98,42 @@ const firebaseConfig = {
 
 2. Ensure your Firestore database has the following structure:
    ```
-   users[
-       user1[
-           currentMonth[
-               servoControl[servoState:1],
-               waterflowSensor[totalusages:214]
-           ],
-           jan24[
-               servoControl[servoState:1],
-               waterflowSensor[totalusages:214]
-           ],
-           feb24[
-               servoControl[servoState:1],
-               waterflowSensor[totalusages:214]
-           ]
-       ],
-       user2[
-           currentMonth[
-               servoControl[servoState:1],
-               waterflowSensor[totalusages:214]
-           ],
-           jan24[
-               servoControl[servoState:1],
-               waterflowSensor[totalusages:214]
-           ],
-           feb24[
-               servoControl[servoState:1],
-               waterflowSensor[totalusages:214]
-           ]
-       ]
+   users[ 
+       user1[ 
+           currentMonth[ 
+               servoControl[servoState:1], 
+               waterflowSensor[totalusages:214] 
+           ], 
+           jan24[ 
+               servoControl[servoState:1], 
+               waterflowSensor[totalusages:214] 
+           ], 
+           feb24[ 
+               servoControl[servoState:1], 
+               waterflowSensor[totalusages:214] 
+           ] 
+       ], 
+       user2[ 
+           currentMonth[ 
+               servoControl[servoState:1], 
+               waterflowSensor[totalusages:214] 
+           ], 
+           jan24[ 
+               servoControl[servoState:1], 
+               waterflowSensor[totalusages:214] 
+           ], 
+           feb24[ 
+               servoControl[servoState:1], 
+               waterflowSensor[totalusages:214] 
+           ] 
+       ] 
    ]
 
-   admin[
-       limit[max:200,penalty:150, regular:100],
-       price[penaltyPrice:2, regularPrice:0.4],
-       01ListOfAdmin[admins:["admin@gmail.com", "admin2@gmail.com"]]
-       currentMonthAdmin[currentMonth:'oct']
+   admin[ 
+       limit[max:200,penalty:150, regular:100], 
+       price[penaltyPrice:2, regularPrice:0.4], 
+       01ListOfAdmin[admins:["admin@gmail.com", "admin2@gmail.com"]] 
+       currentMonthAdmin[currentMonth:'oct'] 
    ]
    ```
 
@@ -144,21 +154,48 @@ Navigate to `http://localhost:3000` to view the project.
 
 ---
 
+## Payment Integration
+
+The project includes payment functionality using **Razorpay**. The integration allows users to make payments for the services offered by the Domestic Water Wastage Prevention System.
+
+1. Ensure you have your Razorpay credentials, which should be added in the `.env` file:
+   ```plaintext
+   REACT_APP_RAZORPAY_KEY=YOUR_RAZORPAY_KEY
+   ```
+
+2. In your payment component, initialize Razorpay using the credentials and handle the payment process.
+
+3. Refer to the Razorpay documentation for detailed integration steps.
+
+---
+
 ## Folder Structure
 
 ```
 waterflow-management-system/
 ├── public/
 ├── src/
-│   ├── components/
+│   ├── admin/
+│   │   ├── SetPrice.jsx
+│   │   ├── SetLimit.jsx
+│   │   ├── AdminViewAllUsers.jsx
+│   │   └── ListOfAmdin.jsx
+│   │   └── ...rest_of_the_files...
+│   ├── user/
 │   │   ├── ServoControl.jsx
 │   │   └── WaterFlow.jsx
-│   ├── firebase/
-│   │   └── waterflow.jsx
+│   │   └── ...rest_of_the_files...
+│   ├── css/
+│   │   └──SetPrice.css
+│   │   └──WaterFlow.css
+│   │   └──...rest_of_the_files...
+│   ├── assets/
+│   │   └── globalMonthData.js
 │   ├── App.jsx
 │   └── main.jsx
 ├── package.json
 └── README.md
+└── .env
 ```
 
 ### Explanation:
@@ -180,4 +217,5 @@ This project is open-source and available under the [MIT License](LICENSE).
 - Akash Bera - [Developer](https://www.linkedin.com/in/akash-bera-5a3009250/)
 - Subhayan Kapas - [Developer](https://www.linkedin.com/in/subhayan-kapas-003009250?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
 
-#
+---
+

@@ -75,8 +75,10 @@ const Authentic = () => {
          for (const collection of collections) {
             const servoControlDocRef = doc(db, 'users', email, collection, 'servoControl');
             const waterflowSensorDocRef = doc(db, 'users', email, collection, 'waterflowSensor');
-            await setDoc(servoControlDocRef, { servoState: 0 });
+            const padiConformationDocRef = doc(db, 'users', email, collection, 'paidStatus');
+            await setDoc(servoControlDocRef, { servoState: false });
             await setDoc(waterflowSensorDocRef, { totalusages: 0 });
+            await setDoc(padiConformationDocRef, { paid: false });
          }
 
          showPopup('Registration successful!');
@@ -109,10 +111,12 @@ const Authentic = () => {
             for (const collection of collections) {
                const servoControlDocRef = doc(db, 'users', email, collection, 'servoControl');
                const waterflowSensorDocRef = doc(db, 'users', email, collection, 'waterflowSensor');
+               const padiConformationDocRef = doc(db, 'users', email, collection, 'paidStatus');
       
                // Initialize servoControl and waterflowSensor documents
-               await setDoc(servoControlDocRef, { servoState: 0 }); // Default state
+               await setDoc(servoControlDocRef, { servoState: false }); // Default state
                await setDoc(waterflowSensorDocRef, { totalusages: 0 }); // Default usage
+               await setDoc(padiConformationDocRef, { paid: false });
             }
          }
    

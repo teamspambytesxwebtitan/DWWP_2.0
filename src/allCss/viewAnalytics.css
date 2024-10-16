@@ -43,7 +43,7 @@
   align-items: center;
 }
 
-.data-list {
+.data-list-monthly {
   overflow: scroll;
   max-height: 400px;
   min-width: 200px;
@@ -59,7 +59,7 @@
   justify-content: center;
 }
 
-.data-list ul {
+.data-list-monthly ul {
   max-width: 80%; /* Limit width to ensure two columns */
   list-style-type: none;
   padding: 0;
@@ -67,7 +67,7 @@
   min-width: 10rem; /* Ensure a minimum width */
 }
 
-.data-list li {
+.data-list-monthly li {
   background-color: #242424;
   min-height: 3rem;
   min-width: 80%;
@@ -79,8 +79,8 @@
   align-items: center;
 }
 
-.data-list ul:nth-child(2) {
-  height: 5rem;
+.data-list-monthly ul:nth-child(1) {
+  height: 4.5rem;
   border-radius: 0.5rem;
   background-color: #3e7b4087;
   border: 2px solid rgb(21, 251, 29);
@@ -90,27 +90,27 @@
   align-items: center;
 }
 
-.data-list strong {
+.data-list-monthly strong {
   color: rgb(47, 174, 237); /* Light blue color for strong text */
 }
 
 
 
-.data-list::-webkit-scrollbar {
+.data-list-monthly::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
 }
 
-.data-list::-webkit-scrollbar-track {
+.data-list-monthly::-webkit-scrollbar-track {
   background: #333; /* Background color of the scrollbar track */
   border-radius: 1rem; /* Rounded corners for track */
 }
 
-.data-list::-webkit-scrollbar-thumb {
+.data-list-monthly::-webkit-scrollbar-thumb {
   background: #555; /* Color of the scrollbar thumb */
   border-radius: 1rem; /* Rounded corners for thumb */
 }
 
-.data-list::-webkit-scrollbar-thumb:hover {
+.data-list-monthly::-webkit-scrollbar-thumb:hover {
   background: #777; /* Color of the scrollbar thumb on hover */
 }
 /* Responsive Design */
@@ -123,17 +123,16 @@
     /* background-color: red; */
   }
 
-  .data-list {
+  .data-list-monthly {
     margin-left: 0;
     margin-top: 20px;
   }
 
-  .view-analytics-header h1 {
-    font-size: 18px;
+  .view-analytics-header {
+    font-size: 2rem;
   }
-
   .chart-container,
-  .data-list {
+  .data-list-monthly {
     width: 80%;
     /* background-color: red; */
   }
@@ -141,7 +140,7 @@
     max-height: 20vh;
   }
 
-  .data-list ul {
+  .data-list-monthly ul {
     min-width: 100%; /* Make list items full-width on small screens */
   }
 }
