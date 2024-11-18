@@ -115,7 +115,7 @@ function UserSidebar() {
           </NavLink>
         </div>
         <div className="nav-item">
-          <NavLink to="/user/payment" className="nav-link">
+          <NavLink to="/user/pay" className="nav-link">
            <div className="userIinnerNavbar" style={{width: "90%"}}>
            <svg
                 version="1.1"

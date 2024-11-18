@@ -20,6 +20,32 @@ function NewPayment({userId}) {
 
     const[selectedMonth, setSelectedMonth] = useState({})
 
+
+    const[userDetails, setUserDetails ] = useState([])
+    const[  totalPrice, setTotalPrice ] = useState(0)
+  
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userDocRef = doc(db, 'users', userId);
+                const userDocSnap = await getDoc(userDocRef);
+    
+                if (!userDocSnap.exists()) {
+                    console.log("No user data found!");
+                    return;
+                }
+    
+                const userData = userDocSnap.data().userDetails;
+                setUserDetails(userData);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+    
+        fetchUserData(); // Call the async function inside useEffect
+    }, [userId]);
+    
+
 // for receipt 
 
 
@@ -33,64 +59,74 @@ function NewPayment({userId}) {
     };
 
 
-    async function downloadPDF() {
+    async function downloadPDF(usedWater) {
 
-
-        try {
-            // const userDocRef2 = doc(db, 'users', userId, 'jan24');  // Assuming 'userDetails' is the subcollection
-            const userDocRef = doc(db, 'users', userId);
-            const userDocSnap = await getDoc(userDocRef);
-    
-            // Check if the document exists
-            if (!userDocSnap.exists()) {
-                console.log("No user data found!");
-                return;
-            }
-            const userData = userDocSnap.data().userDetails
-            console.log(userData);
-            
-        } catch (error) {
-            console.log(error);
-            
+        if (!usedWater || isNaN(usedWater) || usedWater <= 0) {
+            alert('Invalid water usage value for the last month.');
+            return;
         }
+        //here i have to implement the total price  bassed on limits 
+        const regularLimit = adminData?.limit?.regular;
+        const maxLimit = adminData?.limit?.max;
+        const regularPrice = adminData?.price?.regularPrice;
+        const penaltyPrice = adminData?.price?.penaltyPrice;
+
+        if (regularLimit == null || maxLimit == null || regularPrice == null || penaltyPrice == null) {
+            console.error("Admin data is incomplete or not loaded.");
+            return 0;
+        }
+        let extraPrice22 = 0;
+        let totalPrice22 = 0;
+        let regularprice22 = 0 ;
+
+        if (usedWater <= regularLimit) {
+            totalPrice22 = usedWater * regularPrice; // Regular charge
+            regularprice22 = totalPrice22 ;
+            setTotalPrice(totalPrice22)
+        } else if (usedWater > regularLimit && usedWater <= maxLimit) {
+             let extraWater = usedWater - regularLimit; 
+              extraPrice22 = extraWater * penaltyPrice; 
+              regularprice22 = regularLimit * regularPrice ;
+             totalPrice22 = extraPrice22 + regularprice22
+        } else {
+            console.warn("Usage exceeds max limit - additional charges may apply.");
+            totalPrice22 = usedWater * penaltyPrice;
+            setTotalPrice(totalPrice22)
+        }
+        // console.log(userDetails);
+        // console.log(selectedMonth);
         const doc = new jsPDF();
         // Header section
         const logo = 'https://i.ibb.co/9hcFtsn/dwp-logo.png';
         doc.addImage(logo, 'PNG', 10, 10, 20, 20); // Add logo
-        doc.setFontSize(14);
-        doc.text("DWP System", 40, 15);
+        doc.setFontSize(18);
+        doc.text("Domestic Water Wastage Prevention System", 40, 15);
         doc.setFontSize(12);
         doc.text("ONLINE BILL", 40, 25);
     
         // Bill Details Section
         doc.setFontSize(10);
-        doc.text(`Bill ID: ${selectedMonth.razorpay_payment_id}`, 10, 40);
-        doc.text(`Office Name: Palayam `, 120, 40);
-        doc.text(`Bill Date: ${selectedMonth.paid_date}`, 10, 45);
-        doc.text(`Consumer Name: `, 120, 45);
-        doc.text("Meter Number: 1232-19993", 10, 50);
-        doc.text("Consumer ID: 21134114432", 120, 50);
-        doc.text(`Meter Status: ${selectedMonth.paid ? 'paid':'not paid'}`, 10, 55);
-        doc.text("Consumer Number: YAJ/23101/D", 120, 55);
+        doc.text(`Bill Month: ${selectedMonth.month.toUpperCase().slice(0,3) + `_20` + selectedMonth.month.toUpperCase().slice(-2)}`, 10, 40);
+        doc.text(`Consumer Name: ${userDetails[0]} `, 120, 40);
+        doc.text(`Bill ID: ${selectedMonth.razorpay_payment_id}`, 10, 45);
+        doc.text(`Contact No: ${userDetails[1]}`, 120, 45);
+        doc.text(`Bill Date: ${selectedMonth.paid_date}`, 10, 50);
+        doc.text(`Valid ID: ${userDetails[2]}`, 120, 50);
+        doc.text(`Payment Status: ${selectedMonth.paid ? 'paid':'not paid'}`, 10, 55);
+        doc.text(`Consumer Number: ${userDetails[3]}`, 120, 55);
     
         // Line separator
         doc.line(10, 60, 200, 60);
     
         // Reading Details Table
         doc.setFontSize(10);
-        doc.text("Date", 10, 70);
-        doc.text("Reading", 60, 70);
-        doc.text("Consumption", 110, 70);
+        doc.text(`Payment Date: ${selectedMonth.paid_date}`, 10, 100);
+        // doc.text("Reading", 60, 70);
+        doc.text(`Consumption : ${selectedMonth.totalusages}`, 160, 100);
         doc.line(10, 72, 200, 72); // Header underline
-        doc.text("Current", 10, 80);
-        doc.text("31/08/2021", 60, 80);
-        doc.text("15", 110, 80);
-        doc.text("Previous", 10, 85);
-        doc.text("30/07/2021", 60, 85);
-        doc.text("10", 110, 85);
     
         // Additional Amount Details Table
-        doc.text("Additional Amount Details", 10, 100);
+        // doc.text("Additional Amount Details", 10, 100);
         doc.line(10, 102, 200, 102);
         doc.text("Particulars", 10, 110);
         doc.text("Amount", 160, 110);
@@ -99,10 +135,8 @@ function NewPayment({userId}) {
         // Sample rows for additional charges
         let yPosition = 120;
         const charges = [
-            { name: "Previous adjustment", amount: "₹50.00" },
-            { name: "Fine", amount: "₹5.00" },
-            { name: "Interest charge", amount: "₹10.00" },
-            { name: "Bimonthly meter charge", amount: "₹11.00" }
+            { name: "Fare Price", amount: `${regularprice22}` },
+            { name: "Fine", amount: `${extraPrice22}` },
         ];
         charges.forEach(charge => {
             doc.text(charge.name, 10, yPosition);
@@ -111,13 +145,15 @@ function NewPayment({userId}) {
         });
     
         // Footer with Total
-        doc.setFontSize(12);
-        doc.text("Total Amount: ₹78.00", 10, yPosition + 10);
+        doc.setFontSize(16);
+        doc.text(`Total Amount: ${totalPrice22}`, 130, yPosition + 10 );
         doc.line(10, yPosition + 15, 200, yPosition + 15);
     
         // Authorized Signatory Section
         doc.setFontSize(10);
         doc.text("Authorized Signatory", 10, yPosition + 30);
+        const ok = 'https://i.ibb.co/W67L2fK/pngwing-com.png';
+        doc.addImage(ok, 'PNG', 50,yPosition + 25, 10, 10); 
     
         // Footer with Download Date
         const downloadDate = new Date().toLocaleDateString();
@@ -128,9 +164,9 @@ function NewPayment({userId}) {
     }
     
     
-    async function handleViewReceipt(month) {
-        console.log(month);
-    }
+    // async function handleViewReceipt(month) {
+    //     console.log(month);
+    // }
     useEffect(() => {   
         
         // for user data 
@@ -252,6 +288,7 @@ function NewPayment({userId}) {
         } else {
             console.warn("Usage exceeds max limit - additional charges may apply.");
             totalPrice = usedWater * penaltyPrice;
+            setTotalPrice(totalPrice)
         }
 
         const res = await loadRazorpayScript();
@@ -377,7 +414,7 @@ function NewPayment({userId}) {
                                         <hr />
                                     </div>
                                     <div className="receipt-actions">
-                                        <button onClick={() => downloadPDF()} className="download-button">
+                                        <button onClick={() => downloadPDF(selectedMonth.totalusages)} className="download-button">
                                             Download Receipt
                                         </button>
                                         <button onClick={closeModal} className="close-modal-button">
