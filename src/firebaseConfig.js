@@ -12,6 +12,12 @@ const firebaseConfig = {
   storageBucket: "waterflow-dashboard.appspot.com",
   messagingSenderId: "63673543015",
   appId: "1:63673543015:web:94eb493ecc8adfa41f1391"
+  // apiKey:import.meta.env.VITE_FIREBASE_API_KEY ,
+  // authDomain: import.meta.env.VITE_AUTHDOMAIN,
+  // projectId: import.meta.env.VITE_PROJECTID,
+  // storageBucket: import.meta.env.VITE_STORAGEBUCKET,
+  // messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER ,
+  // appId: import.meta.env.VITE_APPID,
 };
 
 // Initialize Firebase

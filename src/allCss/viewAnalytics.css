@@ -6,15 +6,17 @@
   align-items: center;
   justify-content: center;
   margin: 10vh 30%;
-  background-color: #000; /* Dark background color */
+  /* background-color: #000; Dark background color */
   color: #fff; /* Light text color for contrast */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
 }
 
-.view-analytics-header {
+.view-analytics-header-all {
   text-align: center;
+  color: white;
+  
 }
 
 .view-analytics-header h1 {

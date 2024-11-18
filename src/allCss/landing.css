@@ -81,7 +81,7 @@
   border-bottom-right-radius: 40%;
   box-shadow: 5px 5px 20px rgb(196, 195, 195);
   
-  
+  overflow: hidden;
   font-size: 2rem;
   opacity: 0.8;
   z-index: 1;
@@ -99,6 +99,7 @@
   position: relative;
   left: 250px;
   top: 140px;
+  z-index: 100  ;
 }
 .get_service button{
   height: 50px;

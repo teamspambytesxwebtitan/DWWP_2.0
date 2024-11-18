@@ -147,7 +147,7 @@ const WaterFlow = ({ userId }) => {
 
   return (
     <div className="waterflow-container">
-      <header className="waterflow-header">
+      <header className="waterflow-header-all">
         <h1>Water Usage for This Month</h1>
       </header>
       {loading ? (

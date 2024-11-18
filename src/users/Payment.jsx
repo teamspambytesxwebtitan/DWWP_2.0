@@ -1,6 +1,6 @@
   import React, { useState, useEffect } from 'react';
   import { db } from '../firebaseConfig';
-  import { doc, onSnapshot } from 'firebase/firestore';
+  import { doc, onSnapshot , updateDoc } from 'firebase/firestore';
   import { collection, getDocs, getDoc } from "firebase/firestore";
   import { monthCode } from '../assets/globalMonthData';  // Import your global monthCode data
   import '../allCss/payment.css';
@@ -212,6 +212,7 @@
           {/* Payment status with styles for done and not done */}
           <div className={donePayment[monthName.toLowerCase().slice(0, 3) + '24'] ? 'status done' : 'status not-done'}>
             {donePayment[monthName.toLowerCase().slice(0, 3) + '24'] ? 'Done' : 'Not done'}
+            <button onClick={handlePayment}>Pay</button>
           </div>
           <div className='usage'>
             {usage} liters
@@ -347,7 +348,7 @@
 
 
 
-  const handlePayment = async () => {
+  async function handlePayment ()  {
     // Extract the last month's usage value from the renderedMonths array
     const lastRenderedMonth = renderedMonths[renderedMonths.length - 1];
     let lastMonthUsage = lastRenderedMonth.props.children[2]; 
@@ -377,14 +378,24 @@
         amount: Math.floor(totalPrice) * 100, 
         // amount: totalPrice.toFixed(0)* 100, 
         currency: 'INR',
-        name: 'Water Usage Payment',
+        name: 'DWP Payments',
         description: 'Payment for water usage',
-        image: 'https://tse2.mm.bing.net/th?id=OIP.osTgZjm-g1thhxdSa8BtYQHaHa&pid=Api&P=0&h=180', // Optional
-        handler: function (response) {
-            alert(`Payment Successful!\nPayment ID: ${response.razorpay_payment_id} `);
-            console.log(response);
-            
-        },
+        image: 'https://i.ibb.co/r6LcWZ3/dwp-black-log.png', 
+        handler: async function (response) {
+
+          alert(`Payment Successful!\nPayment ID: ${response.razorpay_payment_id}`);
+          const paidDate = new Date().toLocaleDateString("en-GB"); 
+          const currentMonthRef = doc(db, 'users', userId, 'currentMonth', 'paidStatus');
+          try {
+              await updateDoc(currentMonthRef, {
+                  paid: true, 
+                  paid_date: paidDate, 
+                  razorpay_payment_id: response.razorpay_payment_id 
+              });
+          } catch (error) {
+              console.error("Error updating document: ", error);
+          }
+      },
         prefill: {
             name: userId, // Make sure userId is defined in your component
             email: userId,
@@ -420,16 +431,23 @@
               <h3>Payment History</h3>
                 <p className="current-month-info">
                   <strong>
-                    {currentMonthFound
-                      ? monthCode[
-                          Object.keys(monthCode).find(
-                            key => !usageData[key.toLowerCase() + '24']
-                          )
-                        ] + ' 2024'
-                      : 'N/A'}
+                  { currentMonthFound ? (
+                          <>
+                              {monthCode[
+                                  Object.keys(monthCode).find(
+                                      key => !usageData[key.toLowerCase() + '24']
+                                  )
+                              ] + ' 2024'}
+                              <button onClick={handlePayment}>Pay</button>
+                          </>
+                      ) : (
+                          'N/A'
+                      )
+                  }
                   </strong>
                   : {usageData.currentMonth} liters...
                 </p>
+
                 <ul className="reversed-months">{renderedMonths}</ul>  {/* Apply reverse order here */}
               </div> 
               <button className="pay-button" onClick={handlePayment}>

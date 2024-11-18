@@ -173,7 +173,7 @@ const ViewAnalytics = ({ userId }) => {
 
   return (
     <div className="view-analytics-container">
-      <header className="view-analytics-header">
+      <header className="view-analytics-header-all">
         <h1>View Monthly Analytics</h1>
       </header>
       {loading ? (

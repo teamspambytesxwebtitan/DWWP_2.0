@@ -297,10 +297,11 @@ function Home() {
           <div className="header">
             <div className="logo">
               <h1>
-                <FontAwesomeIcon
+                {/* <FontAwesomeIcon
                   icon={faHandHoldingDroplet}
                   className="logo-icon"
-                />
+                /> */}
+                <img src="https://i.ibb.co/9hcFtsn/dwp-logo.png" alt="dwp-logo" border="0" height={'70px'}></img>
               </h1>
             </div>
             <div className="nav">
@@ -344,23 +345,30 @@ function Home() {
             initial={{ x: "-100vw" }}  // Start off-screen to the left
             animate={{ x: 0 }}         // Animate to its original position
             transition={{ type: "spring", stiffness: 100, delay: 0.2 }} // Add a spring effect with some delay
-          >
+          >  
+          <div className="ocean">
+              {Array.from({ length: 20 }).map((_, index) => (
+                <div key={index} className={`bubble bubble--${index + 1}`}></div>
+              ))}
+            </div>  
             <h1 id="first-line">
               Save Water <FontAwesomeIcon icon={faFaucetDrip}  />{" "}
             </h1>
+          
             <br></br>
             <h1 id="second-line">
               Save Life <FontAwesomeIcon icon={faHeartPulse} beat/>{" "}
             </h1>
-            <div className="get_service">
+        
+      
+     
+    </motion.div>
+    <div className="get_service">
             <NavLink to="/auth">
                           {" "}
                           <button>Get OurService</button>
                         </NavLink>
       </div>
-      
-     
-    </motion.div>
         </div>
       </div>
 

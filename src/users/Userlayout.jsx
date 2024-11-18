@@ -96,6 +96,11 @@ function Userlayout() {
 
   return (
     <div className="user-layout">
+      <div className="ocean">
+      {Array.from({ length: 12 }).map((_, index) => (
+        <div key={index} className={`bubble bubble--${index + 1}`}></div>
+      ))}
+    </div>
       <UserSidebar />
       <div className="profile-container-user">
         <div className="profile-info-user">

@@ -68,7 +68,7 @@ const Authentic = () => {
 
          const userDocRef = doc(db, 'users', email); 
          await setDoc(userDocRef, {
-            userDetails: [name, phoneNumber, aadharNumber, address] // Save user details
+            userDetails: [name, phoneNumber, aadharNumber, address] 
          });
 
          const collections = ['currentMonth', 'jan24', 'feb24', 'mar24', 'apr24', 'may24', 'jun24' , 'jul24' , 'aug24', 'sep24', 'oct24', 'nov24' , 'dec24'];
@@ -78,7 +78,7 @@ const Authentic = () => {
             const padiConformationDocRef = doc(db, 'users', email, collection, 'paidStatus');
             await setDoc(servoControlDocRef, { servoState: false });
             await setDoc(waterflowSensorDocRef, { totalusages: 0 });
-            await setDoc(padiConformationDocRef, { paid: false });
+            await setDoc(padiConformationDocRef, {paid: false,paid_date: '',razorpay_payment_id: '' });
          }
 
          showPopup('Registration successful!');

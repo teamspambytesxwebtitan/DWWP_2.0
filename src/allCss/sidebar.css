@@ -81,9 +81,9 @@
 
 .expand-sidenavabr{
   /* background-color: #4ec0f5; */
-  position: absolute  ;
+  position: fixed ;
   left: 0rem;
-  bottom: 1rem;
+  bottom: 0rem;
   z-index: 101;
   display: none;
   /* left: 10%; */
@@ -145,6 +145,7 @@
 @media (max-width: 950px) {
   .expand-sidenavabr{
     width: 5rem;
+    /* background-color: red; */
     display: block;
   }
 }

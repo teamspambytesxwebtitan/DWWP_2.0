@@ -43,7 +43,7 @@
   background-color: #1e1e1e;
   border-radius: 1rem;
   padding: 1rem;
-  box-shadow: 0px 0px 10px black;
+  box-shadow: 0px 0px 10px black; 
 }
 /* Custom scrollbar styling */
 .search-and-table::-webkit-scrollbar {

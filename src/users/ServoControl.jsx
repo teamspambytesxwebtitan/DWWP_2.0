@@ -178,7 +178,7 @@ const ServoControl = ({ userId }) => {
 
   return (
     <div className="servo-control-container">
-      <header className="servo-control-header">
+      <header className="servo-control-header-all">
         <h1>Gate Control</h1>
       </header>
       {loading ? (
