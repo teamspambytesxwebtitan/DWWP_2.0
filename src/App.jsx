@@ -15,7 +15,7 @@ import { UserContext } from './authentication/UserContext';
 import ListOfAdmin from './admin/ListOfAdmin';
 import OtherSettings from './admin/OtherSettings';
 // import PaymentForm from './payment/PaymentForm';
-import Payment from './users/Payment';
+// import Payment from './users/Payment';
 import NewPayment from './users/NewPayment';
 
 
@@ -48,7 +48,7 @@ function App() {
               <Route path="waterflow" element={<Waterflow userId={user.email} />} />
               <Route path="viewanalytics" element={<ViewAnalytics userId={user.email} />} />
               <Route path="pay" element={<NewPayment  userId={user.email} />} />
-              <Route path="payment" element={<Payment userId={user.email} />} />
+              {/* <Route path="payment" element={<Payment userId={user.email} />} /> */}
             </>
           ) : (
             <Route path="*" element={<Authentic />} /> // Redirect to login if not authenticated
