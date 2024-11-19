@@ -67,7 +67,7 @@ const AdminDashboard = () => {
           userId: doc.id,
         });
       });
-
+      
       return allUsersData;
     } catch (error) {
       console.error("Error fetching users: ", error);
@@ -233,6 +233,7 @@ const AdminDashboard = () => {
     user.userId.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+// console.log(allUsersData);
 
   const totalUsage = selectedUser?.currentMonth.totalUsage || 0; // Default to 0 if null
   console.log( selectedUser?.currentMonth.totalUsage);

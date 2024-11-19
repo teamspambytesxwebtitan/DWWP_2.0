@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig';
 import { doc, onSnapshot , updateDoc } from 'firebase/firestore';
 import { collection, getDocs, getDoc } from "firebase/firestore";
+// import { collection, getDocs } from "firebase/firestore";
 // import { monthCode } from '../assets/globalMonthData';  // Import your global monthCode data
 import '../allCss/newPayment.css';
 // import { data } from 'framer-motion/client';
@@ -27,7 +28,10 @@ function NewPayment({userId}) {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
+                // Reference to the document containing user details (not a subcollection)
                 const userDocRef = doc(db, 'users', userId);
+    
+                // Fetch the document
                 const userDocSnap = await getDoc(userDocRef);
     
                 if (!userDocSnap.exists()) {
@@ -35,16 +39,22 @@ function NewPayment({userId}) {
                     return;
                 }
     
+                // Access the userDetails array from the document
                 const userData = userDocSnap.data().userDetails;
-                setUserDetails(userData);
+    
+                if (!userData) {
+                    console.log("No user details found!");
+                    return;
+                }
+    
+                setUserDetails(userData); // Set the user details in state
             } catch (error) {
-                console.log(error);
+                console.log("Error fetching user data:", error);
             }
         };
     
         fetchUserData(); // Call the async function inside useEffect
     }, [userId]);
-    
 
 // for receipt 
 
@@ -60,7 +70,8 @@ function NewPayment({userId}) {
 
 
     async function downloadPDF(usedWater) {
-
+        console.log(userDetails);
+        
         if (!usedWater || isNaN(usedWater) || usedWater <= 0) {
             alert('Invalid water usage value for the last month.');
             return;
@@ -164,9 +175,6 @@ function NewPayment({userId}) {
     }
     
     
-    // async function handleViewReceipt(month) {
-    //     console.log(month);
-    // }
     useEffect(() => {   
         
         // for user data 

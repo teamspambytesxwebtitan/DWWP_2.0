@@ -7,10 +7,10 @@
 
 #define WIFI_SSID "AB"     
 #define WIFI_PASSWORD "akashbera" 
-#define FIREBASE_PROJECT_ID "waterflow-dashboard"
+#define FIREBASE_PROJECT_ID "dwp-5th-sem-project"
 #define FIREBASE_DATABASE_ID "(default)"
-#define API_KEY "AIzaSyCaQ4-CXMn-2HB0RdMKZvDmVm6SGtXPnk8"
-#define USER_EMAIL "ab@gmail.com"
+#define API_KEY "AIzaSyDtB7SHnpIWOU0NSt_jiRe_OS9g6gp_LzE"
+#define USER_EMAIL "abnew@gmail.com"
 #define USER_PASSWORD "123456"
 
 #define FLOW_SENSOR_PIN 15
@@ -71,7 +71,7 @@ void setup() {
 
   config.api_key = API_KEY;
   auth.user.email = USER_EMAIL;
-  auth.user.password = USER_PASSWORD;
+  auth.user.password = USER_PASSWORD; 
   config.token_status_callback = tokenStatusCallback;
 
   Firebase.begin(&config, &auth);

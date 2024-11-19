@@ -17,6 +17,7 @@ import OtherSettings from './admin/OtherSettings';
 // import PaymentForm from './payment/PaymentForm';
 // import Payment from './users/Payment';
 import NewPayment from './users/NewPayment';
+import Test from './landing/Test';
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
       <Routes>
         {/* Landing Page Route */}
         <Route path="/" element={<LandingPage />} />
-
+<Route path="/test" element={<Test/>} />
         {/* Authentication Route */}
         <Route path="/auth" element={<Authentic />} />
 
