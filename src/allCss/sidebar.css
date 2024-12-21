@@ -112,11 +112,9 @@
   /* background-color: rebeccapurple; */
 }
 @media (max-width: 768px) {
-  .expand-sidenavabr{
-    /* display: block; */
-    width: 5rem;
-    
-  }
+
+  
+
   .sidebar-open-button{
     /* background-color: red; */
     position: relative;
@@ -127,9 +125,15 @@
     bottom: 2rem; 
   }
   .sidenav{
-    width: 20%;
-    max-width: 20rem;
+    
+    max-width: 4.2rem;
 
+  }
+  .nav-name{
+    display: none;
+  }
+  .user-profile-icon-sidebar{
+    height: 3.5rem;
   }
 
 
@@ -141,11 +145,12 @@
     text-align: center;
     /* background-color: rebeccapurple; */
   }
-}
-@media (max-width: 950px) {
-  .expand-sidenavabr{
-    width: 5rem;
-    /* background-color: red; */
-    display: block;
+  .sidenav h1{
+    font-size: 1rem;
+    font-weight: none;
+    text-align: center;
+  }
+  .nav-link{
+    margin-top: 20px;
   }
 }

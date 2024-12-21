@@ -147,7 +147,7 @@ const WaterFlow = ({ userId }) => {
 
   return (
     <div className="waterflow-container">
-      <header className="waterflow-header-all">
+     <header className="waterflow-header-all">
         <h1>Water Usage for This Month</h1>
       </header>
       {loading ? (
@@ -156,7 +156,7 @@ const WaterFlow = ({ userId }) => {
         </div>
       ) : (
         <div className="before-main">
-          <p className='usages-title '>Total Usage (liters):<strong> {totalUsage}</strong></p>
+          <p className='usages-title '>Total Usage :<strong> {totalUsage} L</strong></p>
 
           <div className="bar-container">
             {(totalUsage<regularLimit)?(
@@ -181,13 +181,13 @@ const WaterFlow = ({ userId }) => {
               </div>
               <div className="price-box penalty">
                 <h2>Penalty Price :  {penaltyPrice} ₹/L </h2><hr/>
-                <p className="usage-penalty"><strong>Penalty for {penaltyUsage} liters:</strong> ₹{penaltyPriceTotal.toFixed(2)}</p>
+                <p className="usage-penalty"><strong>Penalty for {Math.round(penaltyUsage)} liters:</strong> ₹{penaltyPriceTotal.toFixed(2)}</p>
               </div>
             </div>
 
             {/* Total Price */}
             <div className="total-price">
-              <p>Total Price ₹{totalPrice.toFixed(2)}</p>
+              <p>Total Price : ₹ {totalPrice.toFixed(2)}</p>
             </div>       
           </main> 
 
@@ -200,5 +200,6 @@ const WaterFlow = ({ userId }) => {
     </div>
   );
 };
+
 
 export default WaterFlow;

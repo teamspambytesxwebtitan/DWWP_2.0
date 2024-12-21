@@ -10,22 +10,19 @@
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  /* background-color: #333; */
   background: linear-gradient(145deg, #4ec0f5, #6313ef, rgb(81, 12, 229), rgb(81, 12, 229), rgb(47, 174, 237));
- 
-  padding: 15px; /* Increased padding for better spacing */
+  padding: 75px; /* Increased padding for better spacing */
   border-radius: 8px; 
   box-shadow: 0px 0px 5px black , inset -2px -2px 5px black;
   z-index: 10;
   backdrop-filter: blur(5px); /* Adds a subtle blur effect */
   color: #fff; /* Text color white for dark background */
   font-family: Arial, sans-serif;
-
+  
 }
 
 .profile-info-user {
   text-align: right;
- 
 }
 
 .profile-name-user {
@@ -269,6 +266,85 @@
 .close-button-for-update:hover{
   background-color: rgb(252, 116, 116);
 }
+
+
+/* Main container for the profile (positioned top-right) */
+.profile-container {
+  position: absolute;
+  top: 20px; /* Distance from the top of the page */
+  right: 20px; /* Distance from the right of the page */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures it stays above other elements */
+}
+
+/* Circular user icon */
+.profile-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #3b3b3b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.profile-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Glass effect card */
+.profile-card {
+  position: absolute;
+  top: 70px; /* Positioned below the profile icon */
+  right: 0; /* Aligns with the right side of the profile icon */
+  width: 250px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 10;
+ 
+}
+
+/* Email text */
+.profile-email {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #090606;
+}
+
+/* Buttons in the card */
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-action-button {
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #0078d4;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profile-action-button:hover {
+  background-color: #005bb5;
+}
+
 @media (max-width: 600px) {
   .profile-container-show-user{
     height: 60vh;
@@ -312,6 +388,8 @@
     background-color: #4CAF50;
   }
 }
+
+
 @media (min-width: 600px ) and (max-width: 768px) { 
   .update-button{
     width: 100%;
@@ -327,8 +405,6 @@
   }
 }
 
-
-
 .ocean {
   opacity: 1;
   position: fixed;
@@ -337,7 +413,6 @@
   background-image: linear-gradient(0deg, #182848, #2980b9);
   z-index: -1;
 }
-
 .bubble {
   width: 30px;
   height: 30px;
@@ -349,7 +424,6 @@
   animation: bubble 15s ease-in-out infinite,
              sideWays 4s ease-in-out infinite alternate;
 }
-
 @keyframes bubble {
   0% {
     transform: translateY(0%);
@@ -359,7 +433,6 @@
     transform: translateY(-120vh);
   }
 }
-
 @keyframes sideWays {
   0% {
     margin-left: 0px;
@@ -368,7 +441,6 @@
     margin-left: 200px;
   }
 }
-
 /* Individual bubble styling */
 .bubble--1 { left: 10%; animation-delay: 0.5s; animation-duration: 16s; opacity: 0.2; }
 .bubble--2 { width: 15px; height: 15px; left: 40%; animation-delay: 1s; animation-duration: 10s; opacity: 0.1; }
@@ -381,7 +453,6 @@
   animation-duration: 17s;
   opacity: 0.2;
 }
-
 .bubble--5 {
   width: 30px;
   height: 30px;
@@ -390,7 +461,6 @@
   animation-duration: 15s;
   opacity: 0.1;
 }
-
 .bubble--6 {
   width: 10px;
   height: 10px;
@@ -399,7 +469,6 @@
   animation-duration: 30s;
   opacity: 0.4;
 }
-
 .bubble--7 {
   width: 15px;
   height: 15px;
@@ -408,7 +477,6 @@
   animation-duration: 25s;
   opacity: 0.3;
 }
-
 .bubble--8 {
   width: 20px;
   height: 20px;
@@ -417,7 +485,6 @@
   animation-duration: 12s;
   opacity: 0.3;
 }
-
 .bubble--9 {
   width: 20px;
   height: 20px;
@@ -427,7 +494,6 @@
   animation-duration: 19s;
   opacity: 0.2;
 }
-
 .bubble--10 {
   width: 40px;
   height: 40px;
@@ -437,7 +503,6 @@
   animation-duration: 16s;
   opacity: 0.3;
 }
-
 .bubble--11 {
   width: 30px;
   height: 30px;
@@ -447,7 +512,6 @@
   animation-duration: 20s;
   opacity: 0.3;
 }
-
 .bubble--12 {
   width: 25px;
   height: 25px;
@@ -456,4 +520,43 @@
   animation-delay: -10.5s;
   animation-duration: 19s;
   opacity: 0.3;
+}
+
+
+@media(max-width:768px){
+  .profile-card{
+    position: relative;
+  
+    
+    border: 2px solid black;
+    width: 250px;
+    padding: 20px;
+    background: rgba(124, 105, 105, 0.2);
+    backdrop-filter: blur(90px);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 10000;
+    margin-bottom: 20vh;
+  }
+  .profile-icon{
+    position: relative;
+    left: 48px;
+    
+
+  }
+  .profile-container {
+    position: absolute;
+    top: 5px; /* Distance from the top of the page */
+    right: 20px; /* Distance from the right of the page */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* Ensures it stays above other elements */
+    
+  }
+  .update-button{
+   left: 2rem;
+   width: 80%;
+  }
 }

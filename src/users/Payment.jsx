@@ -1,464 +1,428 @@
-  // import React, { useState, useEffect } from 'react';
-  // import { db } from '../firebaseConfig';
-  // import { doc, onSnapshot , updateDoc } from 'firebase/firestore';
-  // import { collection, getDocs, getDoc } from "firebase/firestore";
-  // import { monthCode } from '../assets/globalMonthData';  // Import your global monthCode data
-  // import '../allCss/payment.css';
+import React, { useState, useEffect } from 'react';
+import { db } from '../firebaseConfig';
+import { doc, onSnapshot , updateDoc } from 'firebase/firestore';
+import { collection, getDocs, getDoc } from "firebase/firestore";
+import '../allCss/payment.css';
+import { jsPDF } from "jspdf";
 
 
-
-  // const Payment = ({ userId }) => {
+function Payment({userId}) {
     
-  //   const [loading, setLoading] = useState(true);
-  //   const [totalUsage, setTotalUsage] = useState(0);
-  //   const [penaltyPrice, setPenaltyPrice] = useState(0);
-  //   const [regularPrice, setRegularPrice] = useState(0);
-  //   const [regularLimit, setRegularLimit] = useState(100);  
-  //   const [penaltyLimit, setPenaltyLimit] = useState(150);
-  //   const [maxLimit, setMaxLimit] = useState(200);
-
-  //   const [isWaterFlowFetched, setIsWaterFlowFetched] = useState(false);
-  //   const [isPriceFetched, setIsPriceFetched] = useState(false);
-  //   const [isLimitFetched, setIsLimitFetched] = useState(false);
-
-  //   const [donePayment, setDonePayment] = useState({});
-  //   const [lastrenderedMonth, setLastrenderedMonth] = useState('');
-  //   const usageDataObject = {};
-  //   const [usageData, setUsageData] = useState({
-  //     jan24: 0,
-  //     feb24: 0,
-  //     mar24: 0,
-  //     apr24: 0,
-  //     may24: 0,
-  //     jun24: 0, // Include June
-  //     jul24: 0,
-  //     aug24: 0,
-  //     sep24: 0,
-  //     oct24: 0,
-  //     nov24: 0,
-  //     dec24: 0,
-  //     currentMonth: 0,
-  //   });
-  //   // for payment status 
-  //   const fetchPaidStatus = async (userId) => {
-  //     let paidStatusData = {}; // Local variable to hold the fetched data
-  //     try {
-  //       let allmonthcode = Object.keys(monthCode).map(code => code + '24');
-  
-  //       // Use for...of to handle async properly
-  //       for (const month of allmonthcode) {
-  //         const paidStatusRef = doc(db, 'users', userId, month, 'paidStatus');
-  //         const docSnap = await getDoc(paidStatusRef);
-  //         if (docSnap.exists()) {
-  //           // Add the paid status to the object, using the month as the key
-  //           paidStatusData[month] = docSnap.data().paid;
-  //         } else {
-  //           console.log(`No document found for ${month}`);
-  //         }
-  //       }
-  
-  //       // Fetch the paid status for the current month
-  //       const currentMonthRef = doc(db, 'users', userId, 'currentMonth', 'paidStatus');
-  //       const currentMonthSnap = await getDoc(currentMonthRef);
-  //       if (currentMonthSnap.exists()) {
-  //         // Add the current month's paid status to the object
-  //         paidStatusData['currentMonth'] = currentMonthSnap.data().paid;
-  //       } else {
-  //         console.log("No document found for currentMonth");
-  //       }
-  
-  //       // Set the fetched data into the state
-  //       setDonePayment(paidStatusData);
-  //     } catch (error) {
-  //       console.error("Error fetching paid status:", error);
-  //     } finally {
-  //       setLoading(false); // Update loading state
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     if (userId) {
-  //       fetchPaidStatus(userId); 
-  //     }
-  //   }, [userId]);
-
-  //   useEffect(() => {
-  //     const unsubscribeJan24 = onSnapshot(doc(db, 'users', userId, 'jan24', 'waterflowSensor'), (jan24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         jan24: jan24Snap.exists() ? jan24Snap.data().totalusages : 0,
-  //       }));
-  //       setLoading(false); // Set loading to false after fetching data
-  //     });
-
-  //     const unsubscribeFeb24 = onSnapshot(doc(db, 'users', userId, 'feb24', 'waterflowSensor'), (feb24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         feb24: feb24Snap.exists() ? feb24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-
-  //     const unsubscribeMar24 = onSnapshot(doc(db, 'users', userId, 'mar24', 'waterflowSensor'), (mar24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         mar24: mar24Snap.exists() ? mar24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeApr24 = onSnapshot(doc(db, 'users', userId, 'apr24', 'waterflowSensor'), (apr24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         apr24: apr24Snap.exists() ? apr24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeMay24 = onSnapshot(doc(db, 'users', userId, 'may24', 'waterflowSensor'), (may24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         may24: may24Snap.exists() ? may24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeJun24= onSnapshot(doc(db, 'users', userId, 'jun24', 'waterflowSensor'), (jun24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         jun24: jun24Snap.exists() ? jun24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeJul24= onSnapshot(doc(db, 'users', userId, 'jul24', 'waterflowSensor'), (jul24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         jul24: jul24Snap.exists() ? jul24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeAug24= onSnapshot(doc(db, 'users', userId, 'aug24', 'waterflowSensor'), (aug24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         aug24: aug24Snap.exists() ? aug24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeSep24= onSnapshot(doc(db, 'users', userId, 'sep24', 'waterflowSensor'), (sep24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         sep24: sep24Snap.exists() ? sep24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeOct24= onSnapshot(doc(db, 'users', userId, 'oct24', 'waterflowSensor'), (oct24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         oct24: oct24Snap.exists() ? oct24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeNov24= onSnapshot(doc(db, 'users', userId, 'nov24', 'waterflowSensor'), (nov24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         nov24: nov24Snap.exists() ? nov24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-  //     const unsubscribeDec24= onSnapshot(doc(db, 'users', userId, 'dec24', 'waterflowSensor'), (dec24Snap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         dec24: dec24Snap.exists() ? dec24Snap.data().totalusages : 0,
-  //       }));
-  //     });
-
-  //     // Fetch current month data
-  //     const unsubscribeCurrentMonth = onSnapshot(doc(db, 'users', userId, 'currentMonth', 'waterflowSensor'), (currentMonthSnap) => {
-  //       setUsageData(prev => ({
-  //         ...prev,
-  //         currentMonth: currentMonthSnap.exists() ? currentMonthSnap.data().totalusages : 0,
-  //       }));
-  //     });
-
-  //     // Cleanup listeners when the component unmounts
-  //     return () => {
-  //       unsubscribeJan24();
-  //       unsubscribeFeb24();
-  //       unsubscribeMar24();
-  //       unsubscribeApr24();
-  //       unsubscribeMay24();
-  //       unsubscribeJun24();
-  //       unsubscribeJul24();
-  //       unsubscribeAug24();
-  //       unsubscribeSep24();
-  //       unsubscribeOct24();
-  //       unsubscribeNov24();
-  //       unsubscribeDec24();
-  //       unsubscribeCurrentMonth(); // Unsubscribe from current month
-  //     };
-  //   }, [userId]);
-
-
-  //   let currentMonthFound = false;
-  //   // const usageDataObject = {};
-
-  //   for (const [key, monthName] of Object.entries(monthCode)) {
-  //     const usageKey = key.toLowerCase() + '24'; // Assuming keys are like 'jan24', 'feb24', etc.
-
-  //     // Check if data for the month exists
-  //     if (!usageData[usageKey]) {
-  //       if (!currentMonthFound) {
-  //         currentMonthFound = true; // This is the first missing data month
-  //       } else {
-  //         break; 
-  //       }
-  //     }
-  //     else {
-  //       usageDataObject[monthName] = usageData[usageKey]; // Store month name and usage
-  //     }
-     
-  //   }
-  //   const renderedMonths = Object.entries(usageDataObject).map(([monthName, usage]) => (
-  //     <li key={monthName} className='month-box'>
-  //       <strong>{monthName} 2024: </strong>
+    const [loading, setLoading] = useState(true);
+    const [monthlyData, setMonthlyData] = useState({});
+    const [adminData, setAdminData] = useState({ limit: {}, price: {}  , currentMonthAdmin:{}});
     
-  //       <div className='month-details'>
-  //         {/* Payment status with styles for done and not done */}
-  //         <div className={donePayment[monthName.toLowerCase().slice(0, 3) + '24'] ? 'status done' : 'status not-done'}>
-  //           {donePayment[monthName.toLowerCase().slice(0, 3) + '24'] ? 'Done' : 'Not done'}
-  //           <button onClick={handlePayment}>Pay</button>
-  //         </div>
-  //         <div className='usage'>
-  //           {usage} liters
-  //         </div>
-  //       </div>
-  //     </li>
-  //   ));
+    const [filteredMonthData, setFilteredMonthData] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const[selectedMonth, setSelectedMonth] = useState({})
+
+
+    const[userDetails, setUserDetails ] = useState([])
+    const[  totalPrice, setTotalPrice ] = useState(0)
+  
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userDocRef = doc(db, 'users', userId);
+                const userDocSnap = await getDoc(userDocRef);
     
+                if (!userDocSnap.exists()) {
+                    console.log("No user data found!");
+                    return;
+                }
+    
+                const userData = userDocSnap.data().userDetails;
+                setUserDetails(userData);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+    
+        fetchUserData();
+    }, [userId]);
     
 
+// for receipt 
 
+
+    const openModal = (month) => {
+        setIsModalOpen(true);
+        setSelectedMonth(month)
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+
+    async function downloadPDF(usedWater) {
+
+        if (!usedWater || isNaN(usedWater) || usedWater <= 0) {
+            alert('Invalid water usage value for the last month.');
+            return;
+        }
+        //here i have to implement the total price  bassed on limits 
+        const regularLimit = adminData?.limit?.regular;
+        const maxLimit = adminData?.limit?.max;
+        const regularPrice = adminData?.price?.regularPrice;
+        const penaltyPrice = adminData?.price?.penaltyPrice;
+
+        if (regularLimit == null || maxLimit == null || regularPrice == null || penaltyPrice == null) {
+            console.error("Admin data is incomplete or not loaded.");
+            return 0;
+        }
+        let extraPrice22 = 0;
+        let totalPrice22 = 0;
+        let regularprice22 = 0 ;
+
+        if (usedWater <= regularLimit) {
+            totalPrice22 = usedWater * regularPrice; // Regular charge
+            regularprice22 = totalPrice22 ;
+            setTotalPrice(totalPrice22)
+        } else if (usedWater > regularLimit && usedWater <= maxLimit) {
+             let extraWater = usedWater - regularLimit; 
+              extraPrice22 = extraWater * penaltyPrice; 
+              regularprice22 = regularLimit * regularPrice ;
+             totalPrice22 = extraPrice22 + regularprice22
+        } else {
+            console.warn("Usage exceeds max limit - additional charges may apply.");
+            totalPrice22 = usedWater * penaltyPrice;
+            setTotalPrice(totalPrice22)
+        }
+        const doc = new jsPDF();
+        // Header section
+        const logo = 'https://i.ibb.co/9hcFtsn/dwp-logo.png';
+        doc.addImage(logo, 'PNG', 10, 10, 20, 20); // Add logo
+        doc.setFontSize(18);
+        doc.text("Domestic Water Wastage Prevention System", 40, 15);
+        doc.setFontSize(12);
+        doc.text("ONLINE BILL", 40, 25);
     
-  //   const getPreviousMonth =  () => {
-  //     const userMonthNamelist =[]
-  //       for (let month of renderedMonths) {
-  //         userMonthNamelist.push(month.key.slice(0,3).toLowerCase());
-  //       }
-  //       console.log('inside func',userMonthNamelist[userMonthNamelist.length -1]+'24');
-  //       setLastrenderedMonth(userMonthNamelist[userMonthNamelist.length -1]+'24')
-  //    return (userMonthNamelist[userMonthNamelist.length -1]+'24')
-  //   }
-   
-  //   // lastt -1 month
-  //   useEffect(() => {
-
-  //     const lastRenderedMonth = getPreviousMonth(); 
-  //     console.log('this is last',lastRenderedMonth);
-  //     const unsubscribeWaterFlow = onSnapshot(
+        // Bill Details Section
+        doc.setFontSize(10);
+        doc.text(`Bill Month: ${selectedMonth.month.toUpperCase().slice(0,3) + `_20` + selectedMonth.month.toUpperCase().slice(-2)}`, 10, 40);
+        doc.text(`Consumer Name: ${userDetails[0]} `, 120, 40);
+        doc.text(`Bill ID: ${selectedMonth.razorpay_payment_id}`, 10, 45);
+        doc.text(`Contact No: ${userDetails[1]}`, 120, 45);
+        doc.text(`Bill Date: ${selectedMonth.paid_date}`, 10, 50);
+        doc.text(`Valid ID: ${userDetails[2]}`, 120, 50);
+        doc.text(`Payment Status: ${selectedMonth.paid ? 'paid':'not paid'}`, 10, 55);
+        doc.text(`Consumer Address: ${userDetails[3]}`, 120, 55);
     
-  //       doc(db, 'users', userId, lastRenderedMonth, 'waterflowSensor'),
-  //       (waterFlowDocSnap) => {
-  //         if (waterFlowDocSnap.exists()) {
-  //           setTotalUsage(waterFlowDocSnap.data().totalusages || 0);
-  //           setIsWaterFlowFetched(true);
-  //           console.log("Water usage updated:", waterFlowDocSnap.data().totalusages || 0);
-  //           console.log('manual', totalUsage , waterFlowDocSnap.data().totalusages);
-            
-  //         } else {
-  //           console.log("No such waterflowSensor document!");
-  //           setIsWaterFlowFetched(true); // Even if document doesn't exist, consider it fetched
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error("Error fetching waterflowSensor document: ", error);
-  //         setIsWaterFlowFetched(true); // Prevent indefinite loading on error
-  //       }
-  //     );
-  
-  //     // Listener for price
-  //     const unsubscribePrice = onSnapshot(
-  //       doc(db, 'admin', 'price'),
-  //       (priceDocSnap) => {
-  //         if (priceDocSnap.exists()) {
-  //           const data = priceDocSnap.data();
-  //           setPenaltyPrice(data.penaltyPrice || 0);
-  //           setRegularPrice(data.regularPrice || 0);
-  //           setIsPriceFetched(true);
-  //           console.log("Prices fetched:", data);
-  //         } else {
-  //           console.log("No such price document!");
-  //           setIsPriceFetched(true); // Even if document doesn't exist, consider it fetched
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error("Error fetching price document: ", error);
-  //         setIsPriceFetched(true); // Prevent indefinite loading on error
-  //       }
-  //     );
-  
-  //     // Listener for limit
-  //     const unsubscribeLimit = onSnapshot(
-  //       doc(db, 'admin', 'limit'),
-  //       (limitDocSnap) => {
-  //         if (limitDocSnap.exists()) {
-  //           const data = limitDocSnap.data();
-  //           setPenaltyLimit(data.penalty || 150);
-  //           setRegularLimit(data.regular || 100);
-  //           setIsLimitFetched(true);
-  //           console.log("Limits fetched:", data);
-  //         } else {
-  //           console.log("No such limit document!");
-  //           setIsLimitFetched(true); // Even if document doesn't exist, consider it fetched
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error("Error fetching limit document: ", error);
-  //         setIsLimitFetched(true); // Prevent indefinite loading on error
-  //       }
-  //     );
-  
-  //     // Cleanup the listeners when the component unmounts
-  //     return () => {
-  //       unsubscribeWaterFlow();
-  //       unsubscribePrice();
-  //       unsubscribeLimit();
-  //     };
-  //   }, [userId ,usageData]);
-  
-  //   useEffect(() => {
-  //     // Check if all data has been fetched
-  //     if (isWaterFlowFetched && isPriceFetched && isLimitFetched) {
-  //       setLoading(false);
-  //     }
-  //   }, [isWaterFlowFetched, isPriceFetched, isLimitFetched]);
-  
-  //   // Calculate the regular usage and penalty usage
-  //   const regularUsage = Math.min(totalUsage, regularLimit);
-  //   const penaltyUsage = totalUsage > regularLimit ? totalUsage - regularLimit : 0;
-  
-  //   const regularPriceTotal = regularUsage * regularPrice;
-  //   const penaltyPriceTotal = penaltyUsage * penaltyPrice;
-  //   const totalPrice = regularPriceTotal + penaltyPriceTotal;
-  
-  
-
-
-  // //   payment 
-  // // const [amount, setAmount] = useState('');
-
-  // const loadRazorpayScript = () => {
-  //   return new Promise((resolve) => {
-  //     const script = document.createElement('script');
-  //     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-  //     script.onload = () => {
-  //       resolve(true);
-  //     };
-  //     script.onerror = () => {
-  //       resolve(false);
-  //     };
-  //     document.body.appendChild(script);
-  //   });
-  // };
-
-
-
-  // async function handlePayment ()  {
-  //   // Extract the last month's usage value from the renderedMonths array
-  //   const lastRenderedMonth = renderedMonths[renderedMonths.length - 1];
-  //   let lastMonthUsage = lastRenderedMonth.props.children[2]; 
-  //   console.log('last month ', lastMonthUsage); 
-  //   lastMonthUsage= totalUsage 
-  //   console.log('last month ', totalUsage);  
-
-  //   const usageAmount = parseFloat(lastMonthUsage);
-  //   console.log(usageAmount ,lastMonthUsage ,lastRenderedMonth);
+        // Line separator
+        doc.line(10, 60, 200, 60);
     
-  //   if (!usageAmount || isNaN(usageAmount) || usageAmount <= 0) {
-  //       alert('Invalid water usage value for the last month.');
-  //       return;
-  //   }
-
-  //   const res = await loadRazorpayScript();
-
-  //   if (!res) {
-  //       alert('Razorpay SDK failed to load. Are you online?');
-  //       return;
-  //   }
+        // Reading Details Table
+        doc.setFontSize(10);
+        doc.text(`Payment Date: ${selectedMonth.paid_date}`, 10, 100);
+        // doc.text("Reading", 60, 70);
+        doc.text(`Consumption : ${selectedMonth.totalusages}`, 160, 100);
+        doc.line(10, 72, 200, 72); // Header underline
     
-  //   const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY; 
-
-  //   const options = {
-  //       key: razorpayKey, 
-  //       amount: Math.floor(totalPrice) * 100, 
-  //       // amount: totalPrice.toFixed(0)* 100, 
-  //       currency: 'INR',
-  //       name: 'DWP Payments',
-  //       description: 'Payment for water usage',
-  //       image: 'https://i.ibb.co/r6LcWZ3/dwp-black-log.png', 
-  //       handler: async function (response) {
-
-  //         alert(`Payment Successful!\nPayment ID: ${response.razorpay_payment_id}`);
-  //         const paidDate = new Date().toLocaleDateString("en-GB"); 
-  //         const currentMonthRef = doc(db, 'users', userId, 'currentMonth', 'paidStatus');
-  //         try {
-  //             await updateDoc(currentMonthRef, {
-  //                 paid: true, 
-  //                 paid_date: paidDate, 
-  //                 razorpay_payment_id: response.razorpay_payment_id 
-  //             });
-  //         } catch (error) {
-  //             console.error("Error updating document: ", error);
-  //         }
-  //     },
-  //       prefill: {
-  //           name: userId, // Make sure userId is defined in your component
-  //           email: userId,
-  //           contact: userId, // Ensure userId is a valid contact number or replace with an appropriate value
-  //       },
-  //       notes: {
-  //           address: 'Customer Address', // Optionally customize this
-  //       },
-  //       theme: {
-  //           color: '#8448ed',
-  //       },
-  //   };
-
-  //   const paymentObject = new window.Razorpay(options);
-  //   paymentObject.open();
-  // };
-
+        // Additional Amount Details Table
+        // doc.text("Additional Amount Details", 10, 100);
+        doc.line(10, 102, 200, 102);
+        doc.text("Particulars", 10, 110);
+        doc.text("Amount", 160, 110);
+        doc.line(10, 112, 200, 112);
+    
+        // Sample rows for additional charges
+        let yPosition = 120;
+        const charges = [
+            { name: "Fare Price", amount: `${regularprice22}` },
+            { name: "Fine", amount: `${extraPrice22}` },
+        ];
+        charges.forEach(charge => {
+            doc.text(charge.name, 10, yPosition);
+            doc.text(charge.amount, 160, yPosition);
+            yPosition += 10;
+        });
+    
+        // Footer with Total
+        doc.setFontSize(16);
+        doc.text(`Total Amount: ${totalPrice22}`, 130, yPosition + 10 );
+        doc.line(10, yPosition + 15, 200, yPosition + 15);
+    
+        // Authorized Signatory Section
+        doc.setFontSize(10);
+        doc.text("Authorized Signatory", 10, yPosition + 30);
+        const ok = 'https://i.ibb.co/W67L2fK/pngwing-com.png';
+        doc.addImage(ok, 'PNG', 50,yPosition + 25, 10, 10); 
+    
+        // Footer with Download Date
+        const downloadDate = new Date().toLocaleDateString();
+        doc.text(`Downloaded on: ${downloadDate}`, 150, yPosition + 30);
+    
+        // Save PDF
+        doc.save("water_bill_receipt.pdf");
+    }
     
 
+    useEffect(() => {   
+        
+        // for user data 
+        const fetchMonthlyData = async () => {
+            const collections = ['currentMonth', 'jan24', 'feb24', 'mar24', 'apr24', 'may24', 'jun24', 'jul24', 'aug24', 'sep24', 'oct24', 'nov24', 'dec24'];
+            const data = {};
 
-  //   return (
-  //     <div className="payment-container">
-  //       <header className="payment-header">
-  //         <h1>Monthly Payment</h1>
-  //       </header>
-  //       {loading ? (
-  //         <div className="loading-container">
-  //           <p className="load">Loading...</p>
-  //         </div>
-  //       ) : (<div className='outer-payment-main'>
-  //           <main className="payment-main">
-  //             <div className="data-list">
-  //             <h3>Payment History</h3>
-  //               <p className="current-month-info">
-  //                 <strong>
-  //                 { currentMonthFound ? (
-  //                         <>
-  //                             {monthCode[
-  //                                 Object.keys(monthCode).find(
-  //                                     key => !usageData[key.toLowerCase() + '24']
-  //                                 )
-  //                             ] + ' 2024'}
-  //                             <button onClick={handlePayment}>Pay</button>
-  //                         </>
-  //                     ) : (
-  //                         'N/A'
-  //                     )
-  //                 }
-  //                 </strong>
-  //                 : {usageData.currentMonth} liters...
-  //               </p>
+            for (const collection of collections) {
+                try {
+                    if (!userId) throw new Error("User 'userId' is undefined");
+                    // const servoControlDocRef = doc(db, 'users', userId, collection, 'servoControl');
+                    const waterflowSensorDocRef = doc(db, 'users', userId, collection, 'waterflowSensor');
+                    const paidStatusDocRef = doc(db, 'users', userId, collection, 'paidStatus');
+                    // const  = await getDoc(servoControlDocRef);
+                    const waterflowSensorDoc = await getDoc(waterflowSensorDocRef);
+                    const paidStatusDoc = await getDoc(paidStatusDocRef);
 
-  //               <ul className="reversed-months">{renderedMonths}</ul>  {/* Apply reverse order here */}
-  //             </div> 
-  //             <button className="pay-button" onClick={handlePayment}>
-  //              Pay ₹{totalPrice.toFixed(0)}
-  //             </button>  
-  //           </main>
-           
-  //       </div>)}
-  //     </div>
+                    data[collection] = {
+                        totalusages: waterflowSensorDoc.exists() ? waterflowSensorDoc.data().totalusages : 0,
+                        paid: paidStatusDoc.exists() ? paidStatusDoc.data().paid : false,
+                        paid_date: paidStatusDoc.exists() ? paidStatusDoc.data().paid_date : '',
+                        razorpay_payment_id: paidStatusDoc.exists() ? paidStatusDoc.data().razorpay_payment_id : ''
+                    };
+                } catch (error) {
+                    console.error(`Error fetching data for ${collection}:`, error);
+                }
+            }
 
-  //   );
-  // };
+            setMonthlyData(data);
+        };
+            //for admin datat
 
-  // export default Payment;
+            const fetchAdminData = async () => {
+                try {
+                    // References to 'admin' documents
+                    const limitDocRef = doc(db, 'admin', 'limit');
+                    const priceDocRef = doc(db, 'admin', 'price');
+                    const currentMonthDocRef = doc(db, 'admin', 'currentMonthAdmin');
+                    // Fetch documents
+                    const limitDoc = await getDoc(limitDocRef);
+                    const priceDoc = await getDoc(priceDocRef);
+                    const currentMonthDoc = await getDoc(currentMonthDocRef);
+    
+                    setAdminData({
+                        limit: limitDoc.exists() ? limitDoc.data() : {},
+                        price: priceDoc.exists() ? priceDoc.data() : {},
+                        currentMonthAdmin: currentMonthDoc.exists() ? currentMonthDoc.data() : {},
+                    });
+                } catch (error) {
+                    console.error("Error fetching admin data:", error);
+                }
+            };
+        fetchMonthlyData();
+        fetchAdminData();
+    }, [userId]);
+
+    // Data of those months who have non zero totaluse values 
+    useEffect(() => {
+        if (Object.keys(monthlyData).length > 0) {  // Ensures monthlyData is ready
+            const monthsWithUsages = Object.keys(monthlyData)
+                .filter(month => monthlyData[month].totalusages !== 0)
+                .map(month => ({
+                    month,
+                    paid: monthlyData[month].paid,
+                    paid_date: monthlyData[month].paid_date,
+                    razorpay_payment_id: monthlyData[month].razorpay_payment_id,
+                    totalusages: monthlyData[month].totalusages
+                }));
+            const filteredData = monthsWithUsages.filter(item => item.month !== 'currentMonth');
+
+            setFilteredMonthData(filteredData);
+            setLoading(false); // Set loading to false only after data is processed
+        }
+    }, [monthlyData ]);
+
+   console.log(filteredMonthData);
+    
+    // console.log(filteredMonthData);
+    const loadRazorpayScript = () => {
+        return new Promise((resolve) => {
+          const script = document.createElement('script');
+          script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+          script.onload = () => {
+            resolve(true);
+          };
+          script.onerror = () => {
+            resolve(false);
+          };
+          document.body.appendChild(script);
+        });
+      };
+    
+    async function handlePayment (usedWater , month)  {
+        console.log(usedWater);
+        
+        if (!usedWater || isNaN(usedWater) || usedWater <= 0) {
+            alert('Invalid water usage value for the last month.');
+            return;
+        }
+        //here i have to implement the total price  bassed on limits 
+        const regularLimit = adminData?.limit?.regular;
+        const maxLimit = adminData?.limit?.max;
+        const regularPrice = adminData?.price?.regularPrice;
+        const penaltyPrice = adminData?.price?.penaltyPrice;
+
+        if (regularLimit == null || maxLimit == null || regularPrice == null || penaltyPrice == null) {
+            console.error("Admin data is incomplete or not loaded.");
+            return 0;
+        }
+        let totalPrice = 0;
+
+        if (usedWater <= regularLimit) {
+            totalPrice = usedWater * regularPrice; // Regular charge
+        } else if (usedWater > regularLimit && usedWater <= maxLimit) {
+             let extraWater = usedWater - regularLimit; 
+             let extraPrice = extraWater * penaltyPrice; 
+             let regularprice = regularLimit * regularPrice ;
+             totalPrice = extraPrice + regularprice
+        } else {
+            console.warn("Usage exceeds max limit - additional charges may apply.");
+            totalPrice = usedWater * penaltyPrice;
+            setTotalPrice(totalPrice)
+        }
+
+        const res = await loadRazorpayScript();
+    
+        if (!res) {
+            alert('Razorpay SDK failed to load. Are you online?');
+            return;
+        }
+        
+        const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY; 
+    
+        const options = {
+            key: razorpayKey, 
+            amount: Math.floor(totalPrice) * 100, 
+            currency: 'INR',
+            name: 'DWP Payments',
+            description: 'Payment for water usage',
+            image: 'https://i.ibb.co/r6LcWZ3/dwp-black-log.png', 
+            handler: async function (response) {
+    
+              alert(`Payment Successful!\nPayment ID: ${response.razorpay_payment_id}`);
+              const paidDate = new Date().toLocaleDateString("en-GB"); 
+              const currentMonthRef = doc(db, 'users', userId, month, 'paidStatus');
+              try {
+                  await updateDoc(currentMonthRef, {
+                      paid: true, 
+                      paid_date: paidDate, 
+                      razorpay_payment_id: response.razorpay_payment_id 
+                  });
+              } catch (error) {
+                  console.error("Error updating document: ", error);
+              }
+          },
+            prefill: {
+                name: userId, 
+                userId: userId,
+                contact: userId, 
+            },
+            notes: {
+                address: 'Customer Address', 
+            },
+            theme: {
+                color: '#8448ed',
+            },
+        };
+    
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+      };  
+
+
+    return (
+        <div className="payment-container">
+            <header className="payment-header">
+                <h1>Monthly Payment</h1>
+            </header>
+            <div className="outer-payment-main">
+                <main className="payment-main">
+                    <div className="data-list">
+                        {/* <h3>Payment History</h3> */}
+                        {loading ? (
+                            <div className="stunning-loader">
+                            <div className="spinner"></div>
+                          </div>
+                        ) : (
+                        <div className="ledger-container">
+                            <h2 className="ledger-title">Payment History</h2>
+                            <table className="ledger-table">
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th>Status</th>
+                                        <th>Total Usages</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredMonthData?.map((months, index) => (
+                                        <tr key={index}>
+                                            <td>
+                                                {months.month.charAt(0).toUpperCase() + months.month.slice(1).toLowerCase()}
+                                            </td>
+                                            <td>{months.paid ? 'Paid' : 'Not Paid'}</td>
+                                            <td>{months.totalusages}</td>
+                                            <td className="pay-and-view">
+                                                <button
+                                                    className={`view-receipt ${!months.paid ? 'not-allowed' : ''}`}
+                                                    onClick={() => openModal(months)}
+                                                    style={{ cursor: months.paid ? 'pointer' : 'not-allowed' }}
+                                                    disabled={!months.paid}
+                                                >
+                                                    View
+                                                </button>
+                                                <button
+                                                    className="pay-button"
+                                                    onClick={() => handlePayment(months.totalusages, months.month)}
+                                                    disabled={months.paid}
+                                                >
+                                                    Pay
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        )}
+
+                        {isModalOpen && (
+                            <div className="modal">
+                                <div className="modal-content receipt">
+                                    <h2 className="receipt-title">Receipt</h2>
+                                    <div className="receipt-details">
+                                        <hr />
+                                        <p><strong>For:</strong> {selectedMonth.month}</p>
+                                        <hr />
+                                        <p><strong>Paid Status:</strong> {selectedMonth.paid ? 'Done' : 'Not Done'}</p>
+                                        <hr />
+                                        <p><strong>Date:</strong> {selectedMonth.paid_date}</p>
+                                        <hr />
+                                        <p><strong>Payment ID:</strong> {selectedMonth.razorpay_payment_id}</p>
+                                        <hr />
+                                    </div>
+                                    <div className="receipt-actions">
+                                        <button onClick={() => downloadPDF(selectedMonth.totalusages)} className="download-button">
+                                            Download Receipt
+                                        </button>
+                                        <button onClick={closeModal} className="close-modal-button">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    );
+}
+
+
+export default Payment;

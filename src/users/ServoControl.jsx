@@ -3,6 +3,7 @@ import { db } from '../firebaseConfig';  // Adjust the path as necessary
 import { doc, getDoc, setDoc, onSnapshot, updateDoc } from 'firebase/firestore';  // Import updateDoc for updating fields
 import '../allCss/servoControl.css';  // Import your CSS for user page styling
 
+
 const ServoControl = ({ userId }) => {
   const [servoState, setServoState] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -188,7 +189,7 @@ const ServoControl = ({ userId }) => {
        </div>
      ) : (
       <main className="servo-control-main">
-        <p><strong>Water Supply Status:</strong> {servoState !== null ? (servoState ? 'On' : 'Off') : 'N/A'}</p>
+        <p className='usages-title '>Water Supply Status:<strong>{servoState !== null ? (servoState ? 'On' : 'Off') : 'N/A'}</strong></p>
       <div className='toggle-and-bar'>
         <div className="servo-control-toggle">
           <label className="switch">
@@ -211,14 +212,14 @@ const ServoControl = ({ userId }) => {
               {/* <div className="bar-orange" style={{ width: `${(orangeWidth / maxLimit) * 100}%` }}></div>
               <div className="bar-red" style={{ width: `${(redWidth / maxLimit) * 100}%` }}></div> */}
               </div>
-             <div className="total-usage">{`Total Usage: ${totalUsage}`}</div>
+             <div className="total-usage-on-servo">{`Total Usage:${totalUsage}`}</div>
              </>):(<>
               <div className="bar">
                 <div className="bar-green" style={{ width: `${(greenWidth / maxLimit) * 100}%` }}></div>
                 <div className="bar-orange" style={{ width: `${(orangeWidth / maxLimit) * 100}%` }}></div>
                 <div className="bar-red" style={{ width: `${(redWidth / maxLimit) * 100}%` }}></div>
                 </div>
-              <div className="total-usage">{`Total Usage: ${totalUsage}`}</div>
+              <div className="total-usage-on-servo">{`Total Usage: ${Math.round(totalUsage)} L`}</div>
              </>)} 
           </div>
          
@@ -240,5 +241,6 @@ const ServoControl = ({ userId }) => {
     </div>
   );
 };
+
 
 export default ServoControl;

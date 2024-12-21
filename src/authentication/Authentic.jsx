@@ -56,7 +56,7 @@ const Authentic = () => {
           // Step 4: Navigate based on the user's role
           if (isAdmin) {
             // User is an admin, navigate to the admin dashboard
-            navigate('/admin/setlimit'); // Adjust this route based on your app
+            navigate('/admin/viewusers'); // Adjust this route based on your app
           } else {
             // User is a regular user, navigate to user-specific page
             navigate('/user/waterflow'); // Adjust this route based on your app

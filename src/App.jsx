@@ -7,17 +7,15 @@ import SetPrice from './admin/setprice';
 import AdminViewAllUsers from './admin/AdminViewAllUsers';
 import Laout from './admin/Laout';
 import ServoControl from './users/ServoControl';
-import Waterflow from './users/Waterflow';
-import ViewAnalytics from './users/viewAnalytics';
-import Userlayout from './users/userlayout';
-import Authentic from './authentication/Authentic'; // Adjust the import path as needed
+import Waterflow from './users/WaterFlow';
+import ViewAnalytics from './users/ViewAnalytics';
+import Userlayout from './users/Userlayout';
+import Authentic from './authentication/Authentic'; 
 import { UserContext } from './authentication/UserContext';
 import ListOfAdmin from './admin/ListOfAdmin';
 import OtherSettings from './admin/OtherSettings';
-// import PaymentForm from './payment/PaymentForm';
-// import Payment from './users/Payment';
-import NewPayment from './users/NewPayment';
-import Test from './landing/Test';
+import Payment from './users/Payment';
+
 
 
 function App() {
@@ -28,7 +26,6 @@ function App() {
       <Routes>
         {/* Landing Page Route */}
         <Route path="/" element={<LandingPage />} />
-<Route path="/test" element={<Test/>} />
         {/* Authentication Route */}
         <Route path="/auth" element={<Authentic />} />
 
@@ -48,11 +45,10 @@ function App() {
               <Route path="servoControl" element={<ServoControl userId={user.email} />} />
               <Route path="waterflow" element={<Waterflow userId={user.email} />} />
               <Route path="viewanalytics" element={<ViewAnalytics userId={user.email} />} />
-              <Route path="pay" element={<NewPayment  userId={user.email} />} />
-              {/* <Route path="payment" element={<Payment userId={user.email} />} /> */}
+              <Route path="payment" element={<Payment  userId={user.email} />} />
             </>
           ) : (
-            <Route path="*" element={<Authentic />} /> // Redirect to login if not authenticated
+            <Route path="*" element={<Authentic />} /> 
           )}
         </Route>
       </Routes>
