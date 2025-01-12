@@ -22,7 +22,7 @@ function App() {
   const user = useContext(UserContext);
 
   return (
-    <Router  basename="/Domestic_Water_Wastage_Prevention_System">
+    <Router  basename="/domestic_water_wastage_prevention_system">
       <Routes>
         {/* Landing Page Route */}
         <Route path="/" element={<LandingPage />} />
