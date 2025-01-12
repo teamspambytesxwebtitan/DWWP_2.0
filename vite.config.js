@@ -9,4 +9,5 @@ export default defineConfig({
     port: 3000 // Or any other port
   },
   base: '/Domestic_Water_Wastage_Prevention_System/', 
+
 })
