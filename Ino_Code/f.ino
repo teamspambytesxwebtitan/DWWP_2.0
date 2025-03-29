@@ -1,4 +1,25 @@
-  //                                ---- tested but overlapping audio ------
+  //                                ---- tested overlappiing audio doing work , need more optimization ------
+
+  // in between sometimes during servo control it freezes .. needs more stabalization ||| also some internal noise leads to increase water flow sensor disturbences 
+
+/*  logs 
+  ✅ Within limit: Servo state = ON
+  🔄 Updating Firestore: users/ab@gmail.com/monthlyUsages/2025-03
+  ✅ Firestore update successful!
+  🟢 Last seen updated: 1742191700281
+  🚰 live Total Usage: 123.80 L
+  ✅ Within limit: Servo state = ON
+  🚰 live Total Usage: 123.80 L
+  ✅ Within limit: Servo state = ON
+  🚰 live Total Usage: 123.80 L
+  ✅ Within limit: Servo state = ON
+  ✅ Fetched limit: 30000.00
+  🚺 Fetched servoState: false
+  🚰 live Total Usage: 123.80 L
+  ✅ Within limit: Servo state = OFF
+  🔄 Servo moved to 90°
+  Queued: 
+*/
 /*
  **Updated Summary (Shortened)**  
 
@@ -31,6 +52,25 @@
 #include "DFRobotDFPlayerMini.h"
 #include "HardwareSerial.h"
 
+#define QUEUE_SIZE 10 
+int audioQueue[QUEUE_SIZE];
+int front = 0, rear = 0;
+bool isPlaying = false;
+
+void enqueue(int fileNumber) {
+    if ((rear + 1) % QUEUE_SIZE == front) {
+        Serial.println("Queue is full!");
+        return;
+    }
+    audioQueue[rear] = fileNumber;
+    rear = (rear + 1) % QUEUE_SIZE;
+}
+int dequeue() {
+    if (front == rear) return -1;  // Queue empty
+    int fileNumber = audioQueue[front];
+    front = (front + 1) % QUEUE_SIZE;
+    return fileNumber;
+}
 
 // -------------------- CONFIGURATION --------------------
 #define WIFI_SSID         "AB"
@@ -110,21 +150,43 @@ int getFileNumber(const char* fileName) {
 }
 // Function to play audio using file name
 void playAudio(const char* fileName) {
-  static unsigned long lastPlayTime = 0;
-  
-  if(millis() - lastPlayTime < 2000) return; // 2s cooldown
-  
-  int fileNumber = getFileNumber(fileName);
-  if(fileNumber != -1) {
-    dfPlayer.play(fileNumber);
-            Serial.print("Playing: ");
-        Serial.println(fileName);
-    lastPlayTime = millis();
-  } else {
+    int fileNumber = getFileNumber(fileName);
+    if (fileNumber != -1) {
+        enqueue(fileNumber);  
+        Serial.print("Queued: ");
+        // Serial.println(fileName);
+        // Serial.print("Queue Front: ");
+        // Serial.println(front);
+        // Serial.print("Queue Rear: ");
+        // Serial.println(rear);
+    } else {
         Serial.println("Error: File not found!");
     }
 }
 
+void processAudioQueue() {
+    static unsigned long lastPlayTime = 0;
+
+    // Serial.println("Checking Queue...");
+    
+    if (!isPlaying && millis() - lastPlayTime > 2000) {
+        int fileNumber = dequeue();
+        // Serial.print("Dequeued File Number: ");
+        // Serial.println(fileNumber);
+        
+        if (fileNumber != -1) {
+            dfPlayer.play(fileNumber);
+            Serial.print("Playing: ");
+            Serial.println(fileNumber);
+            lastPlayTime = millis();
+            isPlaying = true;
+        }
+    }
+
+    if (millis() - lastPlayTime > 2000) {
+        isPlaying = false;
+    }
+}
 
 // -------------------- INTERRUPT SERVICE ROUTINE --------------------
 void IRAM_ATTR pulseCounter() {
@@ -571,6 +633,7 @@ void setup() {
 // -------------------- MAIN LOOP --------------------
 void loop() {
   // Check WiFi connection status
+      processAudioQueue(); 
   if (WiFi.status() != WL_CONNECTED) {
     if (isOnline) {  // Only update on change
       isOnline = false;
@@ -715,6 +778,4 @@ void FINAL_DISPLAY() {
 
     display.display();
 }
-
-
 

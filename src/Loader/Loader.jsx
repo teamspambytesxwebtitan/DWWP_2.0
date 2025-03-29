@@ -3,16 +3,18 @@ import './Loader.css'; // Assuming you will style the loader in a separate CSS f
 
 const Loader = () => {
   return (
-    <div className="banter-loader">
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
-      <div className="banter-loader__box"></div>
+    <div className="loader-container">
+      <div className="banter-loader">
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+        <div className="banter-loader__box"></div>
+      </div>
     </div>
   );
 }

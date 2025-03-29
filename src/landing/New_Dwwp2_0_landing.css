@@ -1,3 +1,6 @@
+*{
+  scroll-behavior: smooth;
+}
 .new_dwwp2_0_landing-container {
     background: #0f0f1e;
     color: white;
@@ -221,6 +224,85 @@
       opacity: 0;
     }
   }  
+
+
+  /* problems */
+
+  .water-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .stat-item {
+    background: #f0faff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .stat-number {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1a73e8;
+    line-height: 1;
+  }
+  
+  .stat-label {
+    display: block;
+    margin: 0.5rem 0;
+    font-weight: 600;
+    color: #2d3748;
+  }
+  
+  .stat-text {
+    font-size: 0.9rem;
+    color: #6e7176;
+  }
+  
+  .vision-description {
+    font-size: .8rem;
+    line-height: 1.2;
+    color: #727d8f;
+    margin-bottom: 2rem;
+  }
+
+  .problem-section {
+    max-width: 1100px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+    padding: 5rem 10%;
+    background: linear-gradient(to top right, rgb(7 16 45), rgb(58 60 84));
+    color: #fff;
+    border-radius: 15px;
+    z-index: 5000;
+    position: relative;
+  }
+  .problem-title{
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: -1.5rem;
+  }
+  .problem-middle-layer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem ;
+  }
+  .problem-content{
+    max-width: 1100px;
+   
+  }
+  .problem-image img{
+    max-width: 650px;
+    /* background-color: red; */
+    border-radius: 1rem;
+
+  }
   /* About Section */
   .new-hero-section{
     display: flex;
@@ -303,7 +385,7 @@
     }
   }
   
-  /* Our Vision Section */
+  /* Our Section */
   .vision-section {
     display: flex;
     align-items: center;

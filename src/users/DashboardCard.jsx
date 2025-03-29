@@ -28,16 +28,17 @@ const DashboardCard = ({ userId }) => {
     usagePercentage: 0,
     safeLimit: 70,
   });
+  const [todayUsage, setTodayUsage] = useState(  parseFloat(sessionStorage.getItem("todayUsage")) || 0);
 
-  const [totalUsage, setTotalUsage] = useState(0);
-  const [penaltyPrice, setPenaltyPrice] = useState(0);
-  const [regularPrice, setRegularPrice] = useState(0);
-  let [regularLimit, setRegularLimit] = useState(0); // Regular limit set to 100 liters
-  const [penaltyLimit, setPenaltyLimit] = useState(0); // Penalty limit set to 150 liters
+  const [totalUsage, setTotalUsage] = useState(  parseFloat(sessionStorage.getItem("totalUsage")) || 0);
+  const [penaltyPrice, setPenaltyPrice] = useState(  parseFloat(sessionStorage.getItem("penaltyPrice")) || 0);
+  const [regularPrice, setRegularPrice] = useState( parseFloat(sessionStorage.getItem("regularPrice")) || 0);
+  let [regularLimit, setRegularLimit] = useState( parseFloat(sessionStorage.getItem("regularLimit")) || 0);
+  const [penaltyLimit, setPenaltyLimit] = useState( parseFloat(sessionStorage.getItem("penaltyLimit")) || 0); 
 
-  const [limitBYUser,  setLimitByUser] = useState(0); // limit by user 
+  const [limitBYUser,  setLimitByUser] = useState( parseFloat(sessionStorage.getItem("limitBYUser")) || 0); // limit by user 
 
-  const [maxLimit, setMaxLimit] = useState(0);
+  const [maxLimit, setMaxLimit] = useState( parseFloat(sessionStorage.getItem("maxLimit")) || 0);
 
   // States to track if each data point has been fetched
   const [isWaterFlowFetched, setIsWaterFlowFetched] = useState(false);
@@ -47,6 +48,9 @@ const DashboardCard = ({ userId }) => {
 
   const [isLoading, setIsLoading] = useState(true);
 
+
+
+
   useEffect(() => {
     if (!userId) return; 
   
@@ -54,45 +58,73 @@ const DashboardCard = ({ userId }) => {
         const now = new Date();
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, "0"); // Ensure two-digit format
+        const day = String(now.getDate()); // Ensure two-digit format
         const yearMonth = `${year}-${month}`; // Format: "YYYY-MM"
-    
-        // console.log(`Fetching waterflow data for: ${yearMonth}`);
+        const today = `${year}-${month}-${day}`; // Format: "YYYY-MM"
     
         // Firestore document path: /users/{userId}/monthlyUsages/{YYYY-MM}
         const usageDocRef = doc(db, "users", userId, "monthlyUsages", yearMonth);
     
-        // Fetch water usage for the month
-        const fetchWaterUsage = async () => {
-          try {
-            const docSnap = await getDoc(usageDocRef);
-            if (docSnap.exists()) {
-              const data = docSnap.data();
-              // console.log("Firestore data:", data);
+      //   // Fetch water usage for the month
+      //   const fetchWaterUsage = async () => {
+      //     try {
+      //       const docSnap = await getDoc(usageDocRef);
+      //       if (docSnap.exists()) {
+      //         const data = docSnap.data();
+              
+      //         setTodayUsage(data[today])
+      //         // Sum all values from the document (each field is a date with a number)
+      //         const total = Object.entries(data)
+      //         .filter(([key]) => key.startsWith(yearMonth)) // Only include keys with "YYYY-MM"
+      //         .reduce((sum, [, usage]) => sum + (usage || 0), 0);
+            
+      //         const userLimit = Object.entries(data)
+      //         .find(([key]) => key === "limit"); // Find the key-value pair directly
+            
+      //       const limitValue = userLimit ? Number(userLimit[1]) : 0; // Convert to number, default to 0
+      //       // console.log(limitValue);
+            
+      //       setLimitByUser(limitValue);
+      //       sessionStorage.setItem("limitBYUser", limitValue);
+              
+      //         setTotalUsage(total);
+      //         sessionStorage.setItem("totalUsage", total);
+      //       }
+      //       setIsWaterFlowFetched(true);
+      //     } catch (error) {
+      //       console.error("Error fetching water usage:", error);
+      //     }
+      //   };
     
-              // Sum all values from the document (each field is a date with a number)
-              const total = Object.entries(data)
-              .filter(([key]) => key.startsWith(yearMonth)) // Only include keys with "YYYY-MM"
-              .reduce((sum, [, usage]) => sum + (usage || 0), 0);
-            
-              const userLimit = Object.entries(data)
-              .find(([key]) => key === "limit"); // Find the key-value pair directly
-            
-            const limitValue = userLimit ? Number(userLimit[1]) : 0; // Convert to number, default to 0
-            // console.log(limitValue);
-            
-            setLimitByUser(limitValue);
-            
-    
-              setTotalUsage(total);
-            }
-            setIsWaterFlowFetched(true);
-          } catch (error) {
-            console.error("Error fetching water usage:", error);
-          }
-        };
-    
-        fetchWaterUsage();
-      }, [userId]);
+      //   fetchWaterUsage();
+      // }, [userId]);
+    // Subscribe to real-time updates
+    const unsubscribe = onSnapshot(usageDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setTodayUsage(data[today] || 0);
+  
+        // Sum all values from the document (each field is a date with a number)
+        const total = Object.entries(data)
+          .filter(([key]) => key.startsWith(yearMonth)) // Only include keys with "YYYY-MM"
+          .reduce((sum, [, usage]) => sum + (usage || 0), 0);
+  
+        const userLimit = data.limit || 0; // Fetch limit value directly
+        
+        setLimitByUser(userLimit);
+        sessionStorage.setItem("limitBYUser", userLimit);
+  
+        setTotalUsage(total);
+        sessionStorage.setItem("totalUsage", total);
+      }
+      setIsWaterFlowFetched(true);
+    }, (error) => {
+      console.error("Error fetching water usage:", error);
+    });
+  
+    // Cleanup function to unsubscribe when component unmounts
+    return () => unsubscribe();
+  }, [userId]);
   
 
   useEffect(() => {
@@ -120,9 +152,11 @@ const DashboardCard = ({ userId }) => {
           const limitValue = userLimit ? Number(userLimit[1]) : 0; // Convert to number, default to 0
           
           setLimitByUser(limitValue);
+          sessionStorage.setItem("limitBYUser", limitValue);
           
           setTotalUsage(total);
-          // console.log("Updated total water usage:", total);
+          sessionStorage.setItem("totalUsage", total);
+
         } else {
           console.log("No water usage data for this month.");
           setTotalUsage(0);
@@ -144,6 +178,8 @@ const DashboardCard = ({ userId }) => {
           setPenaltyPrice(data.penaltyPrice || 0);
           setRegularPrice(data.regularPrice || 0);
           setIsPriceFetched(true);
+          sessionStorage.setItem("penaltyPrice", data.penaltyPrice);
+          sessionStorage.setItem("regularPrice", data.regularPrice);
           // console.log("Prices fetched: 😒😒", data);
         } else {
           console.log("No such price document!");
@@ -164,9 +200,13 @@ const DashboardCard = ({ userId }) => {
           const data = limitDocSnap.data();
           setPenaltyLimit(data.penalty || 0);
           setRegularLimit(data.regular || 100);
-          // setRegularLimit(limitBYUser) ; 
           setMaxLimit(data.max) ; 
-          
+
+          sessionStorage.setItem("regularLimit", data.regular);
+          sessionStorage.setItem("penaltyLimit", data.penalty);
+          sessionStorage.setItem("maxLimit", data.max);
+
+
           setIsLimitFetched(true);
           // console.log("Limits fetched: ", data);
         } else {
@@ -247,7 +287,7 @@ const DashboardCard = ({ userId }) => {
 
 
   const isUsageExceeded = totalUsage >= maxLimit;
-  console.log(maxLimit , totalUsage );
+  // console.log(maxLimit , totalUsage );
   
   const greenWidth = Math.min(totalUsage, regularLimit)||50;
   const orangeWidth = Math.min(Math.max(totalUsage - regularLimit, 0), penaltyLimit - regularLimit)||20;
@@ -273,8 +313,15 @@ const DashboardCard = ({ userId }) => {
               <div className="metric-icon">
                 <GiWaterDrop size="1.5em" color="#2196F3" />
               </div>
+
               <div className="metric-content">
-                <span className="metric-label">Total Usage</span>
+                <span className="metric-label">Today </span>
+                <span className="metric-value">
+                  {isLoading ? "..." : todayUsage.toFixed(0) } L
+                </span>
+              </div>
+              <div className="metric-content">
+                <span className="metric-label">This month</span>
                 <span className="metric-value">
                   {isLoading ? "..." : totalUsage.toFixed(2) } L
                 </span>
@@ -318,9 +365,9 @@ const DashboardCard = ({ userId }) => {
             </div>
           </div>
  
-          <div className="bar-container">
+          {/* <div className="bar-container">
             {(totalUsage<regularLimit)?(<div>bye</div>):(<div>{console.log("Total Usage:", totalUsage ,"max",  maxLimit , greenWidth)}</div>)}
-          </div>
+          </div> */}
 
           <div className="bar-container">
             {(totalUsage<regularLimit)?(
@@ -354,8 +401,12 @@ const DashboardCard = ({ userId }) => {
 
       <div className="second-row">
         <div className="com-box">
-          <p class="text">Price/Ltr :</p>
-          <p class="price-value">₹ {regularPrice}</p>
+          <p class="text">Limit:</p>
+          <p class="price-value">₹ {regularLimit}</p>
+        </div>
+        <div className="com-box">
+          <p class="text">Penelty/Ltr :</p>
+          <p class="price-value">₹ {penaltyPrice}</p>
         </div>
         <div className="com-box">
           <p class="text">Penelty/Ltr :</p>

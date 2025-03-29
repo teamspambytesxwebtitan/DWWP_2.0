@@ -101,9 +101,10 @@ const New_Dwwp2_0_landing = () => {
         </div>
         <ul className="new_dwwp2_0_landing-nav-links">
           <li><a href="#home">Home</a></li>
+          <li><a href="#problems">Crisis</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#vision">Vision</a></li>
-          <li><a href="#city">Citys</a></li>
+          <li><a href="#city">Cities</a></li>
         </ul>
         <button className="new_dwwp2_0_landing-login" onClick={handaleNavigate}>Login</button>
       </nav>
@@ -112,7 +113,7 @@ const New_Dwwp2_0_landing = () => {
       <section className="new-hero-section" id="home">
 
       <div className="new_dwwp2_0_landing-content">
-        <span className="new_dwwp2_0_landing-badge" onClick={()=>window.location.reload()}>🚀 Introducing DWWP 2.0</span>
+        <span className="new_dwwp2_0_landing-badge" onClick={()=>window.location.reload()}>🚀 Introducing DWWP </span>
         <br></br>
         <br></br>
         <h1 className="new_dwwp2_0_landing-title">Revolutionizing Water Management</h1>
@@ -127,7 +128,73 @@ const New_Dwwp2_0_landing = () => {
         </div>
       </div>
       </section>
-      
+
+
+
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+               {/* Problems*/}
+               
+          <section className="problem-section" id="problems">
+            
+          <h2 className="problem-title">India's Water Crisis</h2>
+            <div className="problem-middle-layer">
+            <div className="problem-image">
+              <img src="https://www.researchgate.net/publication/332804586/figure/fig2/AS:760721755353093@1558381608693/Population-and-per-capita-water-supply-per-year-in-India.png" 
+                  alt="Water conservation in India"/>
+            </div>
+            <div className="problem-content">
+              <div className="water-stats">
+                <div className="stat-item">
+                  <span className="stat-number">4%</span>
+                  <span className="stat-label">of global water resources</span>
+                  <span className="stat-text">for 18% of world's population</span>
+                </div>
+                
+                <div className="stat-item">
+                  <span className="stat-number">91%</span>
+                  <span className="stat-label">used for agriculture</span>
+                  <span className="stat-text">(larger than global average of 70%)</span>
+                </div>
+
+                <div className="stat-item">
+                  <span className="stat-number">40%</span>
+                  <span className="stat-label">drinking water wasted</span>
+                  <span className="stat-text">due to leaks &amp; poor infrastructure</span>
+                </div>
+
+                <div className="stat-item">
+                  <span className="stat-number">600 million</span>
+                  <span className="stat-label">people face</span>
+                  <span className="stat-text">high to extreme water stress</span>
+                </div>
+              </div>
+
+            </div>
+              
+              </div>
+            <div className="problem-lower-section">
+                <p className="vision-description">
+                  By 2030, India's water demand is projected to double available supply. 
+                  Nearly 70% of water is contaminated, ranking India 120th of 122 countries 
+                  in water quality index. Urban India loses 50% of drinking water through 
+                  distribution system leaks.
+                </p>
+                <button 
+                  onClick={() => window.location.href = 'https://www.statista.com/chart/32296/development-of-number-of-operational-sewage-treatment-plants-and-annual-sewage-generation-in-india/'} 
+                  className="vision-learn-more"
+                >
+                  See Conservation Tips
+                </button>
+              </div>
+          </section>
+
 
          {/* About Section */}
          <section className="about-section" id="about">
@@ -167,10 +234,10 @@ const New_Dwwp2_0_landing = () => {
         <div className="vision-content">
           <h2 className="vision-title">Our Vision</h2>
           <p className="vision-description">
-            Our vision is to **create a world where water is used efficiently and responsibly**.  
+            Our vision is to create a world where water is used efficiently and responsibly.  
             Through innovation and smart technology, we aim to reduce water wastage,  
             ensure sustainable water management, and empower households to take control  
-            of their water consumption. **Every drop counts, and together we can make a difference.**
+            of their water consumption. Every drop counts, and together we can make a difference.
           </p>
           <button className="vision-learn-more">Join Our Mission</button>
         </div>

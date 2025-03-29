@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import TopUpCard from "./TopUpCard";
 import "./Subscription.css";
 
-const Subscription = () => {
+const Subscription = ({userId}) => {
   return (
     <>
     {/* <Outlet /> */}
@@ -20,10 +20,10 @@ const Subscription = () => {
         }}
       >
         <div className="top-up-cards">
-          <TopUpCard addon={"Summer"} price={20} Refill={50} />
-          <TopUpCard addon={"Standard"} price={50} Refill={80} />
-          <TopUpCard addon={"Party"} price={100} Refill={200} />
-          <TopUpCard addon={"Festive"} price={150} Refill={300} />
+          <TopUpCard addon={"Summer"} price={20} Refill={50} userId = {userId}/>
+          <TopUpCard addon={"Standard"} price={50} Refill={80} userId = {userId}/>
+          <TopUpCard addon={"Party"} price={100} Refill={200} userId = {userId} />
+          <TopUpCard addon={"Festive"} price={150} Refill={300} userId = {userId} />
         </div>
       </motion.div>
 

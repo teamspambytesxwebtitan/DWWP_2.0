@@ -446,7 +446,7 @@
   
   .second-row .com-box {
     height: 65px;
-    width: 350px;
+    width: 230px;
     background-color: #b2ebf2;
     position: relative;
     z-index: 2222;
@@ -455,6 +455,7 @@
     border-radius: 10px;
     transition: all 0.3s ease;
     cursor: pointer;
+    display: flex;
   }
   .second-row .com-box:hover {
     transform: translateY(-3px);
@@ -472,8 +473,8 @@
     letter-spacing: 0.5px;
     padding: 10px;
     position: relative;
-    left: 5px;
-    bottom: 16px;
+    /* left: 5px;
+    bottom: 16px; */
     color: #a0a0a0;
   }
   

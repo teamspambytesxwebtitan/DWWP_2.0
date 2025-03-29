@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext , useState , useEffect} from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import New_Dwwp2_0_landing from './landing/New_Dwwp2_0_landing';
@@ -27,9 +27,20 @@ import AppPerformance from "./admin/App_performance.jsx";
 import Admin_see_UserFeedBack from "./admin/Admin_see_UserFeedBack.jsx";
 
 function App() {
+
   const { user} = useContext(UserContext); // ✅ Get loading state
-  // console.log(userId?.email);
-  
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId") || null);
+
+  useEffect(() => {
+    if (user?.email) {
+      setUserId(user.email);
+      sessionStorage.setItem("userId", user.email);
+      // console.log("✅ User ID stored:", user.email);
+    }
+  }, [user]); // ✅ Run effect when `user` changes
+
+  // console.log("Current userId:", userId);
+
   return (
     <Router basename="/">
       <Routes>
@@ -39,16 +50,14 @@ function App() {
           <Route path="land" element={<New_Dwwp2_0_landing />}></Route>
         {/* // user route */}
         <Route path="user/" element={<Testing />}>
-          <Route path="gateControl" element={<Servo_Control userId={user?.email} />} />
+          <Route path="gateControl" element={<Servo_Control userId={userId} />} />
           <Route path="graph" element={<WaterUsageGraph />} />
-          <Route path="pay/" element={<PaymentsDashboard />}>
-          </Route>
+          
+          <Route path="pay/" element={<PaymentsDashboard userId={userId} />}/>
+          <Route path="topup/" element={<Subscription  userId={userId} />}/>
 
-          <Route path="topup/" element={<Subscription />}>
-          </Route>
-
-          <Route path="onlineStatus" element={<Online_Status status={"offline"} days={14} />}/>
-          <Route path="dashboard" element={<DashboardCard userId={user?.email} />} />
+          <Route path="onlineStatus" element={<Online_Status userId={userId} />}/>
+          <Route path="dashboard" element={<DashboardCard userId={userId} />} />
           <Route path="complain" element={<RaiseComplaint />} />
           <Route path="user_settings" element={<UserSettingsSection />} />
         </Route>

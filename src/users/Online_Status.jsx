@@ -24,7 +24,6 @@ const Online_Status = ({ userId }) => {
     const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
       if (docSnap.exists()) {
         const timestamp = docSnap.data().lastSeen; 
-        console.log(timestamp)
         setLastSeen(timestamp);
       } else {
         setLastSeen(null);
@@ -39,18 +38,21 @@ const Online_Status = ({ userId }) => {
 
     const updateStatus = () => {
       const now = Date.now();
+      const diffSeconds = Math.floor((now - lastSeen) / 1000); // Convert to seconds
       const diffMinutes = Math.floor((now - lastSeen) / (1000 * 60));
       const diffDays = Math.floor(diffMinutes / (60 * 24));
       setDays(diffDays);
 
-      if (diffMinutes < 1) {
+      if (diffSeconds < 15) {
         setStatus("🟢 Online");
-      } else if (diffMinutes < 60) {
-        setStatus(`🟡 Last seen ${diffMinutes} min ago`);
-      } else if (diffMinutes < 1440) {
-        setStatus(`🟡 Last seen ${Math.floor(diffMinutes / 60)} hrs ago`);
+      } else if (diffSeconds < 60) {
+        setStatus(`🟡 Last seen ${diffSeconds} sec ago`);
+      } else if (diffSeconds < 3600) {
+        setStatus(`🟡 Last seen ${Math.floor(diffSeconds / 60)} min ago`);
+      } else if (diffSeconds < 86400) {
+        setStatus(`🟡 Last seen ${Math.floor(diffSeconds / 3600)} hrs ago`);
       } else {
-        setStatus(`🔴 Last seen ${diffDays} days ago`);
+        setStatus(`🔴 Last seen ${Math.floor(diffSeconds / 86400)} days ago`);
       }
     };
 
@@ -87,7 +89,7 @@ const Online_Status = ({ userId }) => {
         <br />
         {status === "🟢 Online" ? '🟢 online' : 'offline'}
         <br />
-        <div className="name">{status === "🟢 Online" ? "Server Synced" : status}</div>
+        <div className="name">{status === "🟢 Online" ? "Device Synced" : status}</div>
         
         {/* <h3 className="see_password" onClick={gotoChangePassword}><FaEye  /> Check Password</h3> */}
       </motion.div>

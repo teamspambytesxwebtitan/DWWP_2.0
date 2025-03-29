@@ -1,4 +1,7 @@
-  //                                ---- tested but overlapping audio ------
+  //                                ---- tested overlappiing audio doing work , need more optimization ------
+
+  // facing sometimes delay .. after reconnecting system reboots (need to think is it good or bad ) ||  also some internal noise leads to increase water flow sensor disturbences 
+
 /*
  **Updated Summary (Shortened)**  
 
@@ -30,6 +33,8 @@
 #include <Adafruit_SSD1306.h>
 #include "DFRobotDFPlayerMini.h"
 #include "HardwareSerial.h"
+#include <esp_task_wdt.h>
+
 
 
 // -------------------- CONFIGURATION --------------------
@@ -52,13 +57,19 @@
 #define OLED_SDA 21
 #define OLED_SCL 22
 
+#define QUEUE_SIZE 15
+
 Servo myServo;
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 HardwareSerial mySerial(1); // Use UART1 on ESP32
 DFRobotDFPlayerMini dfPlayer;
 
+
+
 portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
+portMUX_TYPE audioMux = portMUX_INITIALIZER_UNLOCKED; // audio mux 
+
 // -------------------- GLOBAL OBJECTS --------------------
 FirebaseData fbdo;
 FirebaseAuth auth;
@@ -89,6 +100,25 @@ struct AudioFile {
     int fileNumber;
     const char* fileName;
 };
+
+int audioQueue[QUEUE_SIZE];
+int front = 0, rear = 0;
+bool isPlaying = false;
+
+void enqueue(int fileNumber) {
+    if ((rear + 1) % QUEUE_SIZE == front) {
+        Serial.println("Queue is full!");
+        return;
+    }
+    audioQueue[rear] = fileNumber;
+    rear = (rear + 1) % QUEUE_SIZE;
+}
+int dequeue() {
+    if (front == rear) return -1;  // Queue empty
+    int fileNumber = audioQueue[front];
+    front = (front + 1) % QUEUE_SIZE;
+    return fileNumber;
+}
 AudioFile audioFiles[] = {
     {1, "NINTY_ALERT_ENGLISH.wav"},
     {2, "NINTY_ALERT_HINDI.wav"},
@@ -108,22 +138,52 @@ int getFileNumber(const char* fileName) {
     }
     return -1; // Return -1 if file not found
 }
-// Function to play audio using file name
+
+// Modified playAudio function with queue protection
 void playAudio(const char* fileName) {
-  static unsigned long lastPlayTime = 0;
-  
-  if(millis() - lastPlayTime < 2000) return; // 2s cooldown
-  
-  int fileNumber = getFileNumber(fileName);
-  if(fileNumber != -1) {
-    dfPlayer.play(fileNumber);
-            Serial.print("Playing: ");
+    if ((rear + 1) % QUEUE_SIZE == front) {
+        Serial.println("Audio queue full - discarding request");
+        return;
+    }
+    
+    int fileNumber = getFileNumber(fileName);
+    if (fileNumber != -1) {
+        enqueue(fileNumber);
+        Serial.print("Queued: ");
         Serial.println(fileName);
-    lastPlayTime = millis();
-  } else {
-        Serial.println("Error: File not found!");
     }
 }
+#define MAX_TRACK_DURATION 10000 // 10 seconds (adjust based on your longest audio file)
+unsigned long trackStartTime = 0;
+
+// Modified processAudioQueue function
+void processAudioQueue() {
+    // Check if current track should be considered finished
+    if (isPlaying && (millis() - trackStartTime > MAX_TRACK_DURATION)) {
+        isPlaying = false;
+        Serial.println("Track timeout - assuming finished");
+    }
+
+    // Play next track if not playing and queue not empty
+    if (!isPlaying) {
+        int fileNumber = dequeue();
+        if (fileNumber != -1) {
+            dfPlayer.stop();
+            delay(150); // Required stabilization delay
+            dfPlayer.play(fileNumber);
+            Serial.print("Now playing: ");
+            Serial.println(fileNumber);
+            trackStartTime = millis();
+            isPlaying = true;
+        }
+    }
+
+    // Always handle serial messages to prevent buffer overflow
+    while (mySerial.available()) {
+        dfPlayer.handleMessage(mySerial.read());
+    }
+}
+
 
 
 // -------------------- INTERRUPT SERVICE ROUTINE --------------------
@@ -283,49 +343,56 @@ void fetchServoState() {
 }
 
 void updateServoState() {
-// Get the latest values from local storage (updated by Firebase fetches)
-bool storedServoState = preferences.getBool("servoState", false);
-float storedLimit = preferences.getFloat("limit", 0.0);
+  // Get the latest values from local storage (updated by Firebase fetches)
+  bool storedServoState = preferences.getBool("servoState", false);
+  float storedLimit = preferences.getFloat("limit", 0.0);
 
-// Determine the effective servo state based on usage and limit
+  // Determine the effective servo state based on usage and limit
 
-if (totalUsage >= storedLimit) {
-  effectiveServoState = false; // Force OFF if limit exceeded
-  Serial.println("⚠️ Limit exceeded: Forcing servo OFF");
-} else {
-  effectiveServoState = storedServoState; // Respect Firebase value
-  Serial.printf("✅ Within limit: Servo state = %s\n", 
-                effectiveServoState ? "ON" : "OFF");
-}
-
-// Calculate target angle
-int targetAngle = effectiveServoState ? 0 : 90;
-
-// Move servo only if the target angle changes
-if (targetAngle != currentServoAngle) {
-  myServo.write(targetAngle);
-  currentServoAngle = targetAngle;
-  Serial.printf("🔄 Servo moved to %d°\n", targetAngle);
-  if(targetAngle == 0 ){
-          playAudio("WATER_SUPPLY_ACTIVATED.wav");
-  }else{
-          playAudio("WATER_SUPPLY_STOPPED.wav");
+  if (totalUsage >= storedLimit) {
+    effectiveServoState = false; // Force OFF if limit exceeded
+    Serial.println("⚠️ Limit exceeded: Forcing servo OFF");
+  } else {
+    effectiveServoState = storedServoState; // Respect Firebase value
+    Serial.printf("✅ Within limit: Servo state = %s\n", 
+                  effectiveServoState ? "ON" : "OFF");
   }
-  // Sync state back to Firebase (if online and state changed)
-  if (isOnline && effectiveServoState != storedServoState) {
-    FirebaseJson json;
-    json.set("fields/servoState/booleanValue", effectiveServoState);
-    String path = "users/" + String(USER_EMAIL);
-    if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", 
-                                        path.c_str(), json.raw(), "servoState")) {
-      preferences.putBool("servoState", effectiveServoState); // Update local copy
-      Serial.println("📤 Synced servo state to Firebase");
+
+  // Calculate target angle
+  int targetAngle = effectiveServoState ? 0 : 90;
+
+  // Move servo only if the target angle changes
+  if (targetAngle != currentServoAngle) {
+    myServo.write(targetAngle);
+    currentServoAngle = targetAngle;
+    Serial.printf("🔄 Servo moved to %d°\n", targetAngle);
+          delay(100);
+        // Add audio command protection
+      if (audioQueueCount() < QUEUE_SIZE-2) { // Keep 2 slots free
+          const char* sound = targetAngle ? "WATER_SUPPLY_STOPPED.wav" 
+                                          : "WATER_SUPPLY_ACTIVATED.wav";
+          playAudio(sound);
+      }
+      // delay(50);
+
+
+    // Sync state back to Firebase (if online and state changed)
+    if (isOnline && effectiveServoState != storedServoState) {
+      FirebaseJson json;
+      json.set("fields/servoState/booleanValue", effectiveServoState);
+      String path = "users/" + String(USER_EMAIL);
+      if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", 
+                                          path.c_str(), json.raw(), "servoState")) {
+        preferences.putBool("servoState", effectiveServoState); // Update local copy
+        Serial.println("📤 Synced servo state to Firebase");
+      }
     }
   }
 }
-}
 
-
+    int audioQueueCount() {
+        return (rear >= front) ? (rear - front) : (QUEUE_SIZE - front + rear);
+    }
 
 // -------------------- FIREBASE UPDATE --------------------
 bool updateFirebase(float totalUsage) {
@@ -447,10 +514,13 @@ void setup() {
     while (1);
   }
   display.clearDisplay();
-  display.setTextSize(2);
+  display.setTextSize(4);
   display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("Save Water"); 
+  String message = "DWWP";
+  int16_t x = (SCREEN_WIDTH - (message.length() * 24)) / 2;
+  int16_t y = (SCREEN_HEIGHT - 32) / 2;
+  display.setCursor(x, y);
+  display.print(message);
   display.display();
 
 
@@ -475,21 +545,32 @@ void setup() {
     Serial.print(".");
     
     // 🔹 Keep refreshing "DWWP" every 5 iterations
-    if (retryCount % 5 == 0) {
-    display.clearDisplay();
-    display.setTextSize(1);
-    int16_t x1, y1;
-    uint16_t w, h;
-    const char* wifiConnectText = "Connecting to WIFI...";
-    display.getTextBounds(wifiConnectText, 0, 0, &x1, &y1, &w, &h);
-    int16_t xPos = (128 - w) / 2;
-    display.setCursor(xPos, 30); 
-    display.println(wifiConnectText);
-
-    display.display();
-
-    }
     
+    if (retryCount % 1 == 0) {  // Update on every retry for a fast effect
+      display.clearDisplay();
+      display.setTextSize(1);
+  
+      int16_t centerX = 64, centerY = 32;  // Center point
+      int16_t radius = 10;  // Distance from the center
+      uint8_t spinnerState = retryCount % 8;  // Moves every retry count
+  
+      // Predefined 8 positions in a circular motion
+      int8_t pointsX[8] = {0, 7, 10,  7,  0, -7, -10, -7};
+      int8_t pointsY[8] = {-10, -7,  0,  7, 10,  7,   0, -7};
+  
+      // Draw 4 dots in a circular pattern
+      for (int i = 0; i < 4; i++) {
+          int index = (spinnerState + (i * 2)) % 8;  // Offset each dot
+          display.fillCircle(centerX + pointsX[index], centerY + pointsY[index], 2, WHITE);
+      }
+  
+      // Show the connecting text
+      display.setCursor(30, 50);
+      display.println("Connecting...");
+  
+      display.display();
+  }
+  
     retryCount++;
     if (retryCount > 20) {  // Optional timeout (20 sec)
       display.clearDisplay();
@@ -518,26 +599,37 @@ void setup() {
 
   int16_t x1, y1;
   uint16_t w, h;
-
-  // Get text bounds for the actual first line (WiFi status)
-  const char* wifiText = isOnline ? "WiFi connected" : "Offline Mode";
-  display.getTextBounds(wifiText, 0, 0, &x1, &y1, &w, &h);
-  int16_t xPos1 = (128 - w) / 2;  // Center horizontally
-
-  // Get text bounds for the actual second line ("Syncing with server...")
-  const char* syncText = isOnline ? "Syncing with server.." : "Syncing with local..";
-  display.getTextBounds(syncText, 0, 0, &x1, &y1, &w, &h);
-  int16_t xPos2 = (128 - w) / 2;  // Center horizontally
-
-  // Set cursor and print first line
-  display.setCursor(xPos1, 20);
-  display.println(wifiText);
-
-  // Set cursor and print second line
-  display.setCursor(xPos2, 40);
-  display.println(syncText);
-
-  display.display();
+  
+  display.clearDisplay();  // Clear the screen before updating
+  
+  // Draw WiFi icon instead of text
+  drawWiFiIcon(64, 20);  // Centered WiFi icon at (64, 20)
+  
+  // Get text bounds for "Syncing..." replacement
+  // const char* syncText = isOnline ? "Syncing with server.." : "Syncing with local..";
+  // display.getTextBounds(syncText, 0, 0, &x1, &y1, &w, &h);
+  // int16_t xPos2 = (128 - w) / 2;  // Center horizontally
+  
+  // Draw horizontal loader below WiFi icon
+  drawLoader(34, 50, 60, 8, retryCount);
+  
+  display.display();  // Refresh the display
+  
+  // Function to draw the WiFi icon
+  void drawWiFiIcon(int cx, int cy) {
+      display.fillCircle(cx, cy, 2, SSD1306_WHITE);  // Base dot
+      drawArc(cx, cy, 5, 200, 340);  // Small arc
+      drawArc(cx, cy, 8, 200, 340);  // Middle arc
+      drawArc(cx, cy, 11, 200, 340);  // Large arc
+  }
+  
+  // Function to draw animated horizontal loader
+  void drawLoader(int x, int y, int width, int height, int progress) {
+      display.drawRect(x, y, width, height, SSD1306_WHITE);  // Loader border
+      int fillWidth = map(progress % 10, 0, 9, 0, width - 2);  // Moving fill effect
+      display.fillRect(x + 1, y + 1, fillWidth, height - 2, SSD1306_WHITE);
+  }
+  
 
 
   // ✅ Proceed with Firebase & other setups only if online
@@ -564,6 +656,22 @@ void setup() {
     totalUsage = fetchFirebaseData();
   }
 
+
+    // Enable watchdog timer (5 second timeout)
+     // Define WDT configuration structure
+    esp_task_wdt_config_t wdtConfig = {
+        .timeout_ms = 5000,  // 5 seconds timeout
+        .idle_core_mask = (1 << 0) | (1 << 1),  // Enable on both cores
+        .trigger_panic = false,  // Don't trigger panic; just reset
+    };
+
+    // Initialize the watchdog timer with the correct structure
+    esp_task_wdt_init(&wdtConfig);  // ✅ Fixed
+
+    // Subscribe the main loop task to the watchdog
+    esp_task_wdt_add(NULL);  // NULL means "current task"
+
+    
   vTaskPrioritySet(NULL, 1);   // Set main loop priority
 }
 
@@ -571,6 +679,25 @@ void setup() {
 // -------------------- MAIN LOOP --------------------
 void loop() {
   // Check WiFi connection status
+      processAudioQueue(); 
+if (dfPlayer.available()) {  // ✅ Check if DFPlayer has sent a response
+    int messageType = dfPlayer.readType();  // ✅ Get message type
+
+    switch (messageType) {
+        case DFPlayerPlayFinished:
+            Serial.println("Track finished playing.");
+            break;
+        case DFPlayerError:
+            Serial.print("Error: ");
+            Serial.println(dfPlayer.read());  // ✅ Read error code
+            break;
+        default:
+            Serial.print("Message Type: ");
+            Serial.println(messageType);
+            break;
+    }
+}
+
   if (WiFi.status() != WL_CONNECTED) {
     if (isOnline) {  // Only update on change
       isOnline = false;
@@ -644,13 +771,14 @@ void loop() {
     display.setCursor(x, y);
     display.print(message);
     display.display();
-    delay(2000); // Show welcome message for 2 seconds
+    delay(1000); // Show welcome message for 2 seconds
     display.clearDisplay();
     firstTime = false;
   }
   
   // Update main display with current sensor readings and status
   FINAL_DISPLAY();
+      esp_task_wdt_reset();
   delay(10);
 }
 
@@ -715,6 +843,4 @@ void FINAL_DISPLAY() {
 
     display.display();
 }
-
-
 
