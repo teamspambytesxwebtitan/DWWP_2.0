@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { BsBellFill } from "react-icons/bs";
 import { MdSignalWifi1BarLock } from "react-icons/md";
-import './user_section_settings.css';
+import './User_section_settings.css';
 
 const UserSettingsSection = ({ user, onNotificationToggle }) => {
   const [showPassword, setShowPassword] = useState(false);
