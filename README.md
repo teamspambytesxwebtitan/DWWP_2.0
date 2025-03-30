@@ -2,6 +2,56 @@
 
 An IoT-based solution for intelligent water management with real-time monitoring, automated control, and cloud integration. The system operates seamlessly in both online and offline modes while maintaining data integrity.
 
+# Real-World Problems Solved by the Domestic Water Wastage Prevention (DWWP) System
+1️⃣ Uncontrolled Water Wastage in Households
+Problem: Many households waste water due to negligence, leaks, or excessive usage.
+
+Solution: The system monitors water flow in real-time and automatically shuts off supply when excessive usage is detected, preventing wastage.
+
+2️⃣ Overuse of Water Beyond Set Limits
+Problem: Without a tracking system, people unknowingly exceed their monthly water limit.
+
+Solution: The system enforces limit-based supply, alerting users when consumption nears the limit and cutting off supply if necessary.
+
+3️⃣ Leaks & Pipe Bursts Going Undetected
+Problem: Water leakage from pipes, taps, or tanks often remains unnoticed, causing huge water loss.
+
+Solution: The real-time water monitoring system detects irregular flow patterns and notifies users instantly to take action.
+
+4️⃣ Unfair Water Distribution in Shared Communities
+Problem: In apartments or gated communities, some residents overconsume water, leaving others with shortages.
+
+Solution: The system ensures fair distribution by allocating water based on individual limits, preventing excessive use by any one household.
+
+5️⃣ Lack of Remote Water Control
+Problem: If a user forgets to turn off taps or needs to stop the supply while away from home, manual control is impossible.
+
+Solution: With IoT-based remote access, users can control water supply from their smartphone, ensuring no wastage even when not at home.
+
+6️⃣ No Incentive for Water Conservation
+Problem: People often don’t realize how much water they are consuming and lack motivation to save it.
+
+Solution: The system provides real-time usage statistics, showing how much water is consumed daily, encouraging mindful consumption.
+
+7️⃣ Payment & Billing Inconvenience
+Problem: Traditional water billing systems are based on fixed tariffs or post-usage bills, which can be unpredictable.
+
+Solution: The Razorpay-integrated payment system allows users to top-up extra water instantly, avoiding billing surprises.
+
+8️⃣ Poor Water Management in Water-Scarce Areas
+Problem: In drought-prone regions, excessive water use depletes resources rapidly, leading to shortages.
+
+Solution: The system ensures equitable water distribution and prevents excessive extraction, making water usage more sustainable.
+
+9️⃣ Inefficient Emergency Water Supply Handling
+Problem: During a sudden shortage, users must manually request water, causing delays.
+
+Solution: The system allows for instant top-ups, ensuring users can get extra water immediately without waiting for manual approvals.
+
+🔟 Lack of Data for Water Conservation Policies
+Problem: Governments and municipalities struggle to collect accurate water usage data to plan conservation policies.
+
+Solution: The system collects real-time consumption data, helping authorities design better water-saving strategies.
 ---
 
 ## Table of Contents
