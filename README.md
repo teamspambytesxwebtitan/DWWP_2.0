@@ -188,10 +188,6 @@ MIT License - See [LICENSE](LICENSE) for details.
 
 ---
 
-## Contributors
-
-- Akash Bera ([LinkedIn](https://linkedin.com/in/akash-bera))
-- Subhayan Kapas ([LinkedIn](https://linkedin.com/in/subhayan-kapas))
 
 ---
 
